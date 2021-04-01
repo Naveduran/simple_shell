@@ -9,24 +9,23 @@
  * Return: zero always.
  */
 
-int main(int argc, char *argv[], char *env[])
+int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *env[])
 {
-	char *string, *string2;
-	size_t size;
-	int iterator;
+	char *string = NULL;
+	size_t size = 0;
+	token_node *tokens = NULL, *string2 = NULL;
+
 	while (1)
 	{
 		printf("dali<3 ");
 		getline(&string, &size, stdin);
-		/*Quitar enter que deja getline:  */
-		for (iterator = 0; string[iterator]; iterator++)
-		{
 
-		}
-		string[iterator - 1] = '\0';
-		/*TODO: partir en pedazos la string para tomar los argumentos */
-		/*              string2 = tokenize(string);*/
-		execute(string, env);
+		string2 = tokenize(string, &tokens);
+		if (string2 == NULL)
+			exit(98);
+
+		execute(&tokens, env);
+		free_tokens_list(tokens);
 	}
 	return (0);
 }

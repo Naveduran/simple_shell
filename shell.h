@@ -14,6 +14,17 @@ typedef struct token_node_name{
 	struct token_node_name *next;
 } token_node;
 
+/**
+ * struct builtins - struct for the builtins
+ * @builtin: the name of the builtin
+ * @function: the associated function to be called for each builtin
+ */
+typedef struct builtins
+{
+	char *builtin;
+	int (*function)(va_list);
+} builtins;
+
 /*execute a command with its entire path*/
 int execute(token_node **head, char *environment[]);
 

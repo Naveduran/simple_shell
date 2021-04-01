@@ -9,12 +9,6 @@ token_node *tokenize(char *string, token_node **tokens)
 {
 	const char delimiter = ' ';
 	char *token = NULL;
-	int string_length = 0;
-
-	/*DONE: quitar enter que deja getline:*/
-	string_length = str_length(string);
-	if (string[string_length - 1] == '\n')
-		string[string_length - 1] = '\0';
 
 	do {
 		if (token == NULL)

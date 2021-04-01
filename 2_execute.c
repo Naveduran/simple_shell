@@ -15,7 +15,6 @@ int execute(token_node **tokens, char *environment[])
 	if (tokens[0])
 	{
 		value = execve(arguments[0], arguments, environment);
-		printf("Value of execution: %d\n", value);
 		if (value == -1)
 		{
 			printf("./shell: No such file or directory\n");

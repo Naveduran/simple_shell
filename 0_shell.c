@@ -22,24 +22,21 @@ char *argv[] __attribute__((unused)), char *env[])
 /*show the prompt and wait for the input of the user*/
 		printf("dali<3 ");
 		string_length = getline(&string, &size, stdin);
-
-/* ¡¡Hay que liberar lo que haga getline por que hace malloc!! */
 /*replace newline at the end of getline for a null character:*/
-		if (string[string_length - 1] == '\n')
-			string[string_length - 1] = '\0';
+		if (*string == EOF)
+		{
+			printf("dino\n");
+			return (0);
+		}
 /*if there are arguments given to dali<3 execute them*/
 		if (string_length > 1)
 		{
-/*if EOF, exit
-			if (*string == EOF)
-			return (0);*/
-				tokenize(string, &tokens);
-/*			if (tokens == NULL)
-			exit(98); */
+			if (string[string_length - 1] == '\n')
+				string[string_length - 1] = '\0';
+			tokenize(string, &tokens);
 			execute(&tokens, env);
 			free_tokens_list(tokens);
 		}
-		free(string);
 	}
 	return (0);
 }

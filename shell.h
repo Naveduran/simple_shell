@@ -8,11 +8,27 @@
 #include <stddef.h>
 #include <errno.h>
 
-typedef struct token_node_name{
+/**
+ * struct token_node_name - ...
+ * @token: ...
+ * @length: ..
+ */
+typedef struct token_node_name
+{
 	char *token;
 	int length;
 	struct token_node_name *next;
 } token_node;
+
+/*1_tokenize.c*/
+token_node *tokenize(char *string, token_node **tokens);
+
+/*2_execute.c a command with its entire path*/
+int execute(token_node **head, char *environment[]);
+
+/* 2_builtins_structure.c search for match between the first and only token */
+/*                         with the builtins and calls the builtin */
+int builtins_structure(token_node **tokens);
 
 /**
  * struct builtins - struct for the builtins
@@ -22,21 +38,18 @@ typedef struct token_node_name{
 typedef struct builtins
 {
 	char *builtin;
-	int (*function)(va_list);
+	int (*function)(token_node **tokens);
 } builtins;
 
-/*execute a command with its entire path*/
-int execute(token_node **head, char *environment[]);
+int builtin_exit(token_node **tokens);
 
-
-/*1_tokenize.c*/
-token_node *tokenize(char *string, token_node **tokens);
+int builtin_env(token_node **tokens);
 
 /*1_manage_param_list.c*/
 
 token_node *add_token(token_node **head, const char *token);
-void free_tokens_list(token_node *head);
 
+void free_tokens_list(token_node *head);
 
 /* util.c */
 int str_length(char *string);

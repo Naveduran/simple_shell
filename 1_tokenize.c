@@ -3,6 +3,7 @@
 /**
  * tokenize - this function separate the string using a designed delimiter
  * @string: string to be parsed
+ * @tokens: array de tokens
  * Return: an array of the different parts of the string
  */
 token_node *tokenize(char *string, token_node **tokens)

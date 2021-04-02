@@ -7,22 +7,20 @@
  * Otherwise returns NULL
  **/
 
-int (*builtins_structure(const char *command, int position))(va_list)
+int builtins_structure(token_node **tokens)
 {
 	int iterator;
-	spc_t options[] = {
-/*{char * builtin, int (*function)(va_list)};*/
+	builtins options[] = {
 		{"exit", builtin_exit},
-		{"env", builtin_env},
 		{NULL, NULL}
 	};
+
 /*walk trhough the structure*/
 	for (iterator = 0; options[iterator].builtin != '\0'; iterator++)
 /*if there is a match between the given command and a builtin,*/
-		if (options[iterator].builtin[0] == command[position])
+		if (options[iterator].builtin == (*tokens)->token)
 /*execute the function, and return the return value of the function*/
-		{
-			return (options[iterator].function);
-		}
-	return (NULL);
+			return (options[iterator].function(tokens));
+/*if there is no match return -1 */
+	return (-1);
 }

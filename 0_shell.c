@@ -8,7 +8,8 @@
  * Return: zero always.
  */
 
-int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *env[])
+int main(int argc __attribute__((unused)),
+char *argv[] __attribute__((unused)), char *env[])
 {
 	char *string = NULL;
 	size_t size;
@@ -21,12 +22,11 @@ int main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		getline(&string, &size, stdin);
 /*replace newline at the end of getline for a null character:*/
 		string_length = str_length(string);
-		if (string[string_length - 1] == '\n')
-			string[string_length - 1] = '\0';
-/*if there are arguments given to dali execute them<3*/
+		string[string_length - 1] = '\0';
+/*if there are arguments given to dali<3 execute them*/
 		if (string_length > 1)
 		{
-			string2 = tokenize(string, &tokens);
+			 = tokenize(string, &tokens);
 			if (string2 == NULL)
 				exit(98);
 			execute(&tokens, env);

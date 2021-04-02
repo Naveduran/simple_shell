@@ -22,5 +22,5 @@ int builtins_structure(token_node **tokens)
 /*execute the function, and return the return value of the function*/
 			return (options[iterator].function(tokens));
 /*if there is no match return -1 */
-	return (-1);
+	return (0);
 }

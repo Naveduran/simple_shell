@@ -9,26 +9,25 @@
  */
 int execute(token_node **tokens, char *environment[])
 {
-	int value;
+	int returnvalueB, returnvalueC;
 	char *arguments[] = {tokens[0]->token, NULL};
-	int returnvalueofthebuiltin;
 
-/*if the argument first argument is a built in, execute it*/
-	returnvalueofthebuiltin = builtins_structure(tokens);
+/* try to execute the builtin if its a builtin */
+	returnvalueB = builtins_structure(tokens);
 
-/*if it is not a built in, try to execute the command*/
+/* try to execute the command, if its a command */
 	if ((*tokens)->token)
 	{
-		value = execve(arguments[0], arguments, environment);
-		if (value == -1)
+		returnvalueC = execve(arguments[0], arguments, environment);
+/* If it can not execute the command, print an error message*/
+		if (returnvalueC == -1)
 		{
 			printf("./shell: No such file or directory\n");
 			return (-1);
 		}
+/* If it execute the command, return the value of return of the command*/
 		else
-		{
-			return (0);
-		}
+			return (returnvalueC);
 	}
 	else
 	{

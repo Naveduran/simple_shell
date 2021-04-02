@@ -27,7 +27,7 @@ token_node *tokenize(char *string, token_node **tokens);
 int execute(token_node **head, char *environment[]);
 
 /* 2_builtins_structure.c search for match between the first and only token */
-/*                         with the builtins and calls the builtin */
+/*                         with the builtins and execute the builtin */
 int builtins_structure(token_node **tokens);
 
 /**

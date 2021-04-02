@@ -21,17 +21,7 @@ gcc -Wall -Werror -Wextra -pedantic *.c
 ---
 > ## Examples to use it
 *Example 0*
-    #include "holberton.h"
-    /**
-     * main - main function
-     * Return: always 0
-    **/
-    int main()
-    {
-        _printf("Hello World!/n");
-        return (0);
-    }
-    output: Hello World!
+
 ---
 >## Environment
  This project has been tested on `Ubuntu 14.06.6 LTS`

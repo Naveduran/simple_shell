@@ -30,7 +30,6 @@ token_node *add_token(token_node **head, const char *token)
 	/* add new node to end of list*/
 	*head = new_node;
 	return (new_node);
-
 }
 
 /**

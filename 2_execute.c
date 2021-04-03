@@ -6,9 +6,9 @@
  * @tokens: contains the entire path of the command to be executed
  * Return: If sucess returns zero, otherwise, return -1.
  */
-int execute(char *tokens[], char *environment[]);
+int execute(char *tokens[], char *environment[])
 {
-	int retvalB = 666, retvalC = 666, status;
+	int retvalB = 0, retvalC = 0, status;
 	pid_t pidd;
 
 	retvalB = builtins_structure(tokens);
@@ -17,12 +17,8 @@ int execute(char *tokens[], char *environment[]);
 	if (tokens[0])
 	{
 		pidd = fork(); /* create a child process */
-		printf("I have create a child with the pid = %d\n", pidd);
 		if (pidd == -1)
-		{
-			printf("Error haciendo el fork para ejecutar\n");
 			return (-1);
-		}
 		if (pidd == 0) /* if I am the child, I execute*/
 		{
 			retvalC = execve(tokens[0], tokens, environment);

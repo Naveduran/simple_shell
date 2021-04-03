@@ -6,8 +6,7 @@
  * Return: zero if sucess, or other number if its declared in the arguments
  */
 
-int builtin_exit(char *tokens[] __attribute__((unused)))
+int builtin_exit(char *tokens[])
 {
-	printf("Voy a salir\n");
 	exit(0);
 }

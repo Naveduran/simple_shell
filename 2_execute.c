@@ -6,16 +6,15 @@
  * @tokens: contains the entire path of the command to be executed
  * Return: If sucess returns zero, otherwise, return -1.
  */
-int execute(token_node **tokens, char *environment[])
+int execute(char *tokens[], char *environment[]);
 {
 	int retvalB = 666, retvalC = 666, status;
-	char *arguments[] = {tokens[0]->token, NULL};
 	pid_t pidd;
 
 	retvalB = builtins_structure(tokens);
 	if (retvalB != 0)
 		return (retvalB);
-	if ((*tokens)->token)
+	if (tokens[0])
 	{
 		pidd = fork(); /* create a child process */
 		printf("I have create a child with the pid = %d\n", pidd);
@@ -26,8 +25,7 @@ int execute(token_node **tokens, char *environment[])
 		}
 		if (pidd == 0) /* if I am the child, I execute*/
 		{
-			retvalC = execve(arguments[0], arguments, environment);
-			printf("functionexecuted,execve returns:%d\n", retvalC);
+			retvalC = execve(tokens[0], tokens, environment);
 			if (retvalC == -1)
 			{
 				printf("./shell: No such file or directory\n");
@@ -36,12 +34,6 @@ int execute(token_node **tokens, char *environment[])
 		}
 		else /*If I am the father I wait*/
 			wait(&status);
-		if (WIFEXITED(&status) != 1) /*If child ended anormally*/
-		{
-			printf("The command was found and executed, but ended");
-			printf(" anormally. ");
-			printf("WEXITSTATUS:%d\n", WEXITSTATUS(status));
-		}
 	}
 	return (0);
 }

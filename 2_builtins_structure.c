@@ -16,7 +16,7 @@ int builtins_structure(token_node **tokens)
 	};
 
 /*walk trhough the structure*/
-	for (iterator = 0; options[iterator].builtin != '\0'; iterator++)
+	for (iterator = 0; options[iterator].builtin != NULL; iterator++)
 /*if there is a match between the given command and a builtin,*/
 		if (options[iterator].builtin == (*tokens)->token)
 /*execute the function, and return the return value of the function*/

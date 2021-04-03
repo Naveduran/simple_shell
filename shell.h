@@ -47,11 +47,17 @@ int builtin_env(token_node **tokens);
 
 /*1_manage_param_list.c*/
 
-token_node *add_token(token_node **head, const char *token);
+token_node *add_token(token_node **head, char *token);
 
-void free_tokens_list(token_node *head);
+void free_tokens_list(token_node **head);
+
+token_node *get_token_node(token_node *head_list, unsigned int index);
+
+char *get_token_at(token_node *head_list, unsigned int index);
 
 /* util.c */
 int str_length(char *string);
+
+char *str_duplicate(char *string);
 
 #endif /* SHELL_H */

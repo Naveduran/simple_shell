@@ -10,20 +10,19 @@
  */
 int main(int argc, char *argv[], char *env[])
 {
-	char *string = NULL;
+	char *string = NULL, *tokens = NULL;
 	size_t size;
-	token_node *tokens = NULL;
 	int string_length = 0, i;
-
 /*si se han pasado parametros al programa (modo no interactivo)*/
 	if (argc > 1)
 	{
+		tokens = malloc(argc * sizeof(char *));
 		for (i = 1; i < argc; i++)
-			add_token(&tokens, argv[i]);
+			tokens[i - 1] = argv[i];
 
 		execute(&tokens, env);
-		free_tokens_list(&tokens);
-		return (0);
+		free(tokens);
+		return (EXIT_SUCCESS);
 	}
 /*si esta en modo interactivo*/
 	while (1)
@@ -31,11 +30,10 @@ int main(int argc, char *argv[], char *env[])
 /*show the prompt and wait for the input of the user*/
 		printf("dali<3 ");
 		string_length = getline(&string, &size, stdin);
-		if (string_length == EOF)
-		{
+
 		/* debe salir de manera controlada ???*/
+		if (string_length == EOF)
 			return (0);
-		}
 /*if there are text given to dali<3, execute them*/
 		if (string_length > 1)
 		{
@@ -45,8 +43,11 @@ int main(int argc, char *argv[], char *env[])
 
 			tokenize(string, &tokens);
 			execute(&tokens, env);
-			free_tokens_list(&tokens);
+			if (tokens)
+			{
+				free(tokens);
+				tokens = NULL;
+			}
 		}
 	}
-	return (0);
 }

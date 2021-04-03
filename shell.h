@@ -2,11 +2,13 @@
 #define SHELL_H
 
 #include <stdio.h> /* for printf*/
-#include <unistd.h>
+#include <unistd.h> /* for fork, execve*/
 #include <stdlib.h> /* */
 #include <string.h> /* for strtok*/
 #include <stddef.h>
-#include <errno.h>
+#include <errno.h> /*for errno and perror*/
+#include <sys/types.h> /*for type pid*/
+#include <sys/wait.h> /*for wait*/
 
 /**
  * struct token_node_name - ...

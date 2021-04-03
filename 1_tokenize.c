@@ -6,21 +6,21 @@
  * @tokens: array de tokens
  * Return: an array of the different parts of the string
  */
-token_node *tokenize(char *string, token_node **tokens)
+char **tokenize(char *string, char *tokens[])
 {
 	const char delimiter = ' ';
 	char *token = NULL;
+	int iterator = 0;
+	int counter = 0;
 
-	do {
-		if (token == NULL)
-			token = strtok(string, &delimiter);
-		else
-			token = strtok(NULL, &delimiter);
-
-		if (token)
-			add_token(tokens, token);
-
-	} while (token);
-
+	for (iterator = 0; string[iterator]; ++iterator)
+	{
+		if(string[counter] == ' ')
+			counter = counter + 1;
+	}
+	tokens = malloc(counter * sizeof(char *));
+	tokens[0] = strtok(string, &delimiter);
+	for (iterator = 0; tokens[iterator]; ++iterator)
+		tokens[iterator] = strtok(NULL, &delimiter);
 	return (*tokens);
 }

@@ -8,16 +8,13 @@
  */
 int execute(token_node **tokens, char *environment[])
 {
-	int returvalueB = 666, returvalueC = 666, status;
+	int retvalB = 666, retvalC = 666, status;
 	char *arguments[] = {tokens[0]->token, NULL};
 	pid_t pidd;
 
-/* try to execute the builtin if its a builtin */
-	returvalueB = builtins_structure(tokens);
-/*if execute the builtin, return the returnvalue of the builtin*/
-	if (returvalueB != 0)
-		return (returnvalueB);
-/* try to execute the command, if its a command */
+	retvalB = builtins_structure(tokens);
+	if (retvalB != 0)
+		return (retvalB);
 	if ((*tokens)->token)
 	{
 		pidd = fork(); /* create a child process */
@@ -29,22 +26,21 @@ int execute(token_node **tokens, char *environment[])
 		}
 		if (pidd == 0) /* if I am the child, I execute*/
 		{
-			returvalueC = execve(arguments[0], arguments, environment);
-			printf("function executed, execve returns:%d\n", returvalueC);
-/* If it can not execute the command, print an error message*/
-			if (returvalueC == -1)
+			retvalC = execve(arguments[0], arguments, environment);
+			printf("functionexecuted,execve returns:%d\n", retvalC);
+			if (retvalC == -1)
 			{
 				printf("./shell: No such file or directory\n");
 				return (-1);
 			}
-/* If it execute the command, return the value of return of the command*/
 		}
 		else /*If I am the father I wait*/
 			wait(&status);
 		if (WIFEXITED(&status) != 1) /*If child ended anormally*/
 		{
-			printf("The command was found and executed,
-but ended anormally. WEXITSTATUS:%d\n", WEXITSTATUS(status));
+			printf("The command was found and executed, but ended");
+			printf(" anormally. ");
+			printf("WEXITSTATUS:%d\n", WEXITSTATUS(status));
 		}
 	}
 	return (0);

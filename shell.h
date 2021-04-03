@@ -10,14 +10,13 @@
 #include <sys/types.h> /*for type pid*/
 #include <sys/wait.h> /*for wait*/
 
-/*1_tokenize.c*/
+/*separate the string in tokens using a designed delimiter*/
 char **tokenize(char *string, char *tokens[]);
 
 /*2_execute.c a command with its entire path*/
 int execute(char *tokens[], char *environment[]);
 
-/* 2_builtins_structure.c search for match between the first token
-/*                         with the builtins and execute the builtin */
+/* if match a builtin, executes it */
 int builtins_structure(char *tokens[]);
 
 /**
@@ -31,11 +30,16 @@ typedef struct builtins
 	int (*function)(char *tokens[]);
 } builtins;
 
+/* close the shell*/
 int builtin_exit(char *tokens[]);
 
-/* util.c */
+/* Counts the number of characters of a string */
 int str_length(char *string);
 
+/* Duplicates an string */
 char *str_duplicate(char *string);
+
+/* Compares two strings*/
+int string_compare(char *string1, char *string2, int number);
 
 #endif /* SHELL_H */

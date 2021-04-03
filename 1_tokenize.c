@@ -6,21 +6,32 @@
  * @tokens: array de tokens
  * Return: an array of the different parts of the string
  */
-char **tokenize(char *string, char *tokens[])
+char **tokenize(char *string, char **tokens)
 {
 	const char delimiter = ' ';
-	char *token = NULL;
+	char *token = NULL, *string2 = string;
 	int iterator = 0;
-	int counter = 0;
+	int counter = 1;
 
-	for (iterator = 0; string[iterator]; ++iterator)
+	for (iterator = 0; string[iterator]; iterator++)
 	{
-		if(string[counter] == ' ')
-			counter = counter + 1;
+		if(string[iterator] == ' ')
+			counter++;
 	}
+
 	tokens = malloc(counter * sizeof(char *));
+	if (tokens == NULL)
+	{
+		printf("el malloc no funcionó\n");
+		return(NULL);
+	}
+
 	tokens[0] = strtok(string, &delimiter);
-	for (iterator = 0; tokens[iterator]; ++iterator)
-		tokens[iterator] = strtok(NULL, &delimiter);
-	return (*tokens);
+
+	for (counter = 1; tokens[counter - 1]; counter++)
+	{
+		tokens[counter] = strtok(NULL, &delimiter);
+	}
+
+	return (tokens);
 }

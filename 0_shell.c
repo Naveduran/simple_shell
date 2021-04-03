@@ -10,7 +10,8 @@
  */
 int main(int argc, char *argv[], char *env[])
 {
-	char *string = NULL, *tokens = NULL;
+	char *string = NULL;
+	char **tokens = NULL;
 	size_t size;
 	int string_length = 0, i;
 /*si se han pasado parametros al programa (modo no interactivo)*/
@@ -18,9 +19,9 @@ int main(int argc, char *argv[], char *env[])
 	{
 		tokens = malloc(argc * sizeof(char *));
 		for (i = 1; i < argc; i++)
-			tokens[i - 1] = argv[i];
+			*(tokens + i - 1) = argv[i];
 
-		execute(&tokens, env);
+		execute(tokens, env);
 		free(tokens);
 		return (EXIT_SUCCESS);
 	}
@@ -41,9 +42,9 @@ int main(int argc, char *argv[], char *env[])
 			if (string[string_length - 1] == '\n')
 				string[string_length - 1] = '\0';
 
-			tokenize(string, &tokens);
-			execute(&tokens, env);
-			if (tokens)
+			tokens = tokenize(string, tokens);
+			execute(tokens, env);
+			if (*tokens)
 			{
 				free(tokens);
 				tokens = NULL;

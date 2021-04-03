@@ -10,7 +10,7 @@ int builtins_structure(char *tokens[])
 {
 	int iterator;
 	builtins options[] = {
-		{"exit", builtin_exit(tokens)},
+		{"exit", builtin_exit},
 		{NULL, NULL}
 	};
 
@@ -22,11 +22,10 @@ int builtins_structure(char *tokens[])
 /*execute the function, and return the return value of the function*/
 		{
 			printf("El token coincide con la builtin!\n");
-			return (options[iterator].function);
+			return (options[iterator].function(tokens));
 		}
 /*if there is no match return -1 */
 	}
 	printf("Ya recorrí las builtins y no encontré match\n");
 	return (0);
-	}
 }

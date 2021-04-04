@@ -11,6 +11,8 @@
 #include <sys/wait.h> /*for wait*/
 #include <sys/stat.h> /*for use of stat function*/
 
+extern char **environ;
+
 /*separate the string in tokens using a designed delimiter*/
 char **tokenize(char *string, char *tokens[]);
 
@@ -33,6 +35,9 @@ typedef struct builtins
 
 /* close the shell*/
 int builtin_exit(char *tokens[]);
+
+/* shows the environment where the shell runs*/
+int builtin_env(char *tokens[]);
 
 /* Counts the number of characters of a string */
 int str_length(char *string);

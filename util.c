@@ -69,3 +69,45 @@ int string_compare(char *string1, char *string2, int number)
 		return (1);
 	}
 }
+
+/**
+ * str_concat - concatenates two strings.
+ *
+ * @s1: String to be concatenated
+ * @string2: String to be concatenated
+ *
+ * Return: pointer to the array
+ */
+char *str_concat(char *string1, char *string2)
+{
+	char *resultado;
+	int length1 = 0, length2 = 0;
+
+	if (string1 == NULL)
+		string1 = "";
+	length1 = str_length(string1);
+
+	if (string2 == NULL)
+		string2 = "";
+	length2 = str_length(string2);
+
+	resultado = malloc(sizeof(char) * (length1 + length2 + 1));
+	if (resultado == NULL)
+		return (NULL);
+
+	/* copy of string1 */
+	for (length1 = 0; string1[length1] != '\0'; length1++)
+		resultado[length1] = string1[length1];
+	free(string1);
+
+	/* copy of string2 */
+	for (length2 = 0; string2[length2] != '\0'; length2++)
+	{
+		resultado[length1] = string2[length2];
+		length1++;
+	}
+
+	resultado[length1]= '\0';
+
+	return (resultado);
+}

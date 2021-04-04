@@ -9,6 +9,7 @@
 #include <errno.h> /*for errno and perror*/
 #include <sys/types.h> /*for type pid*/
 #include <sys/wait.h> /*for wait*/
+#include <sys/stat.h> /*for use of stat function*/
 
 /*separate the string in tokens using a designed delimiter*/
 char **tokenize(char *string, char *tokens[]);
@@ -41,5 +42,8 @@ char *str_duplicate(char *string);
 
 /* Compares two strings*/
 int string_compare(char *string1, char *string2, int number);
+
+/* concatenates two strings */
+char *str_concat(char *string1, char *string2);
 
 #endif /* SHELL_H */

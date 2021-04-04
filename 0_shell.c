@@ -8,7 +8,7 @@
  *
  * Return: zero on succes.
  */
-int main(int argc, char *argv[], char *env[])
+int main(int argc, char *argv[])
 {
 	char *string = NULL;
 	char **tokens = NULL;
@@ -21,7 +21,7 @@ int main(int argc, char *argv[], char *env[])
 		for (i = 1; i < argc; i++)
 			*(tokens + i - 1) = argv[i];
 
-		execute(tokens, env);
+		execute(tokens);
 		free(tokens);
 		return (EXIT_SUCCESS);
 	}
@@ -32,9 +32,8 @@ int main(int argc, char *argv[], char *env[])
 		printf("dali<3 ");
 		string_length = getline(&string, &size, stdin);
 
-		/* debe salir de manera controlada ???*/
 		if (string_length == EOF)
-			return (0);
+			exit (EXIT_SUCCESS);
 /*if there are text given to dali<3, execute them*/
 		if (string_length > 1)
 		{
@@ -43,7 +42,7 @@ int main(int argc, char *argv[], char *env[])
 				string[string_length - 1] = '\0';
 
 			tokens = tokenize(string, tokens);
-			execute(tokens, env);
+			execute(tokens);
 			if (*tokens)
 			{
 				free(tokens);

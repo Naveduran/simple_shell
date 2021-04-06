@@ -43,11 +43,7 @@ int main(int argc, char *argv[])
 
 			tokens = tokenize(string, tokens);
 			execute(tokens);
-			if (*tokens)
-			{
-				free(tokens);
-				tokens = NULL;
-			}
+			free_array_of_pointers(tokens);
 		}
 	}
 }

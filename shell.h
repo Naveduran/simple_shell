@@ -17,7 +17,7 @@ extern char **environ;
 char **tokenize(char *string, char *tokens[]);
 
 /*2_execute.c a command with its entire path*/
-int execute(char *tokens[], char *environment[]);
+int execute(char *tokens[]);
 
 /* if match a builtin, executes it */
 int builtins_structure(char *tokens[]);
@@ -38,6 +38,16 @@ int builtin_exit(char *tokens[]);
 
 /* shows the environment where the shell runs*/
 int builtin_env(char *tokens[]);
+
+/* find a program in path */
+char *find_program(char *function_name);
+
+/* return array of path directories */
+char **get_path();
+
+/* frees the memory for directories */
+void free_array_of_pointers(char **directories);
+
 
 /* Counts the number of characters of a string */
 int str_length(char *string);

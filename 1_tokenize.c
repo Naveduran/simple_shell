@@ -8,7 +8,7 @@
  */
 char **tokenize(char *string, char **tokens)
 {
-	const char delimiter = ' ';
+	const char *delimiter = " \n\t";
 	char *token = NULL, *string2 = string;
 	int iterator = 0;
 	int counter = 1;
@@ -26,11 +26,12 @@ char **tokenize(char *string, char **tokens)
 		return(NULL);
 	}
 
-	tokens[0] = strtok(string, &delimiter);
-
-	for (counter = 1; tokens[counter - 1]; counter++)
+	counter = 0;
+	tokens[counter] = strtok(string, delimiter);
+	while (tokens[counter])
 	{
-		tokens[counter] = strtok(NULL, &delimiter);
+		counter++;
+		tokens[counter] = strtok(NULL, delimiter);
 	}
 
 	return (tokens);

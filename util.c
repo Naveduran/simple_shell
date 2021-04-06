@@ -1,4 +1,26 @@
 #include "shell.h"
+
+void rev_string(char *s)
+{
+
+	int len = str_length(s);
+	int index = 0;
+	char hold;
+
+	len--;
+	if (s[0] == '-')
+		index = 1;
+
+	while (index < len)
+	{
+		hold = s[index];
+		s[index] = s[len];
+		s[len] = hold;
+
+		index++;
+		len--;
+	}
+}
 /**
  * str_length - returns the length of a string.
  * @string: pointer to string.
@@ -23,17 +45,24 @@ char *str_duplicate(char *string)
 {
 	char *resultado;
 	int string_len, i;
+
 	if (string == NULL)
 		return (NULL);
+
 	string_len = str_length(string);
+
 	resultado = malloc(sizeof(char) * (string_len + 1));
+
 	if (resultado == NULL)
 		return (NULL);
+
 	for (i = 0; i < string_len ; i++)
 	{
 		resultado[i] = string[i];
 	}
+
 	resultado[string_len] = '\0';
+
 	return (resultado);
 }
 
@@ -63,7 +92,7 @@ int string_compare(char *string1, char *string2, int number)
 	{
 		for (iterator = 0; iterator < number ; iterator++)
 		{
-			if (string1[iterator] != string2[iterator]);
+			if (string1[iterator] != string2[iterator])
 			return (0);
 		}
 		return (1);

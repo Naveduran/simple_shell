@@ -1,4 +1,7 @@
 #include "shell.h"
+
+
+
 /**
  * main - shows a prompt, receives strings from the command line, and erase
  * the last newline
@@ -13,7 +16,10 @@ int main(int argc, char *argv[])
 	char **tokens = NULL;
 	size_t size;
 	int string_length = 0, i;
+	name_own = argv[0];
 /*si se han pasado parametros al programa (modo no interactivo)*/
+if (isatty(STDIN_FILENO))
+
 	if (argc > 1)
 	{
 		tokens = malloc(argc * sizeof(char *));
@@ -28,8 +34,10 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 /*show the prompt and wait for the input of the user*/
+if (isatty(STDIN_FILENO))
+{
 		_print("dali<3 ");
-
+}
 		string_length = getline(&string, &size, stdin);
 /* if EOF is the fisrt Char of string, exit*/
 		if (string_length == EOF)

@@ -8,7 +8,10 @@
 
 int builtin_exit(char *tokens[])
 {
-	exit(0);
+	if (tokens[1] != NULL)
+		exit(atoi(tokens[1]));
+	else
+		exit(EXIT_SUCCESS);
 }
 /**
  * builtin_env - shows the environment where the shell runs
@@ -18,11 +21,11 @@ int builtin_exit(char *tokens[])
 
 int builtin_env(char *tokens[] __attribute__((unused)))
 {
-    int iterator;
+	int iterator;
 
-    for (iterator = 0; environ[iterator]; iterator++)
-    {
-        printf("%s\n", environ[iterator]);
-    }
+	for (iterator = 0; environ[iterator]; iterator++)
+	{
+		_print(environ[iterator]);
+	}
 	return (0);
 }

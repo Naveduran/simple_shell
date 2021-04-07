@@ -9,28 +9,28 @@
 char **tokenize(char *string, char **tokens)
 {
 	const char *delimiter = " \n\t";
-	char *token = NULL, *string2 = string;
 	int iterator = 0;
-	int counter = 1;
+	int counter = 2;
 
 	for (iterator = 0; string[iterator]; iterator++)
 	{
-		if(string[iterator] == ' ')
+		if (string[iterator] == ' ')
 			counter++;
 	}
 
 	tokens = malloc(counter * sizeof(char *));
+
 	if (tokens == NULL)
 	{
 		printf("el malloc no funcionó\n");
-		return(NULL);
+		return (NULL);
 	}
 
 	counter = 0;
 	tokens[counter] = strtok(string, delimiter);
-	while (tokens[counter])
+
+	while (tokens[counter++])
 	{
-		counter++;
 		tokens[counter] = strtok(NULL, delimiter);
 	}
 

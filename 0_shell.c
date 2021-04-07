@@ -4,7 +4,6 @@
  * the last newline
  * @argc: number of values received from the command line
  * @argv: values received from the command line
- * @env: environment.
  *
  * Return: zero on succes.
  */
@@ -29,21 +28,25 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 /*show the prompt and wait for the input of the user*/
-		printf("dali<3 ");
-		string_length = getline(&string, &size, stdin);
+		_print("dali<3 ");
 
+		string_length = getline(&string, &size, stdin);
+/* if EOF is the fisrt Char of string, exit*/
 		if (string_length == EOF)
-			exit (EXIT_SUCCESS);
+			exit(EXIT_SUCCESS);
 /*if there are text given to dali<3, execute them*/
 		if (string_length > 1)
 		{
 /*replace newline at the end of getline for a null character:*/
 			if (string[string_length - 1] == '\n')
 				string[string_length - 1] = '\0';
-
 			tokens = tokenize(string, tokens);
-			execute(tokens);
-			free_array_of_pointers(tokens);
+			if (tokens[0])
+				execute(tokens);
+
+			if (tokens)
+				free(tokens);
+			tokens = NULL;
 		}
 	}
 }

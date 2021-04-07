@@ -13,6 +13,8 @@
 
 extern char **environ;
 
+int _print(char *string);
+
 /*separate the string in tokens using a designed delimiter*/
 char **tokenize(char *string, char *tokens[]);
 
@@ -43,7 +45,7 @@ int builtin_env(char *tokens[]);
 char *find_program(char *function_name);
 
 /* return array of path directories */
-char **get_path();
+char **tokenize_path();
 
 /* frees the memory for directories */
 void free_array_of_pointers(char **directories);
@@ -56,7 +58,7 @@ int str_length(char *string);
 char *str_duplicate(char *string);
 
 /* Compares two strings*/
-int string_compare(char *string1, char *string2, int number);
+int str_compare(char *string1, char *string2, int number);
 
 /* concatenates two strings */
 char *str_concat(char *string1, char *string2);

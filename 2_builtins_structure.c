@@ -10,7 +10,7 @@ int builtins_structure(char *tokens[])
 	int iterator, equal;
 	builtins options[] = {
 		{"exit", builtin_exit},
-        {"env", builtin_env},
+		{"env", builtin_env},
 		{NULL, NULL}
 	};
 
@@ -18,7 +18,7 @@ int builtins_structure(char *tokens[])
 	for (iterator = 0; options[iterator].builtin != NULL; iterator++)
 	{
 /*if there is a match between the given command and a builtin,*/
-		equal = string_compare(options[iterator].builtin, tokens[0], 0);
+		equal = str_compare(options[iterator].builtin, tokens[0], 0);
 		if (equal)
 /*execute the function, and return the return value of the function*/
 		{

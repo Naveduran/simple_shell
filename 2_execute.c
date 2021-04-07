@@ -1,7 +1,6 @@
 #include "shell.h"
 /**
  * execute - execute a command with its entire path
- * @environment: pointer to the first element of the array of environment
  * variables.
  * @tokens: contains the entire path of the command to be executed
  * Return: If sucess returns zero, otherwise, return -1.
@@ -9,13 +8,14 @@
 int execute(char *tokens[])
 {
 	int retval = 0, status;
+	char *command_name = tokens[0];
 	pid_t pidd;
 
 	retval = builtins_structure(tokens);
 	if (retval != 0)
 		return (retval);
 
-	tokens[0] = find_program(tokens[0]);
+	tokens[0] = find_program(command_name);
 
 	if (tokens[0])
 	{
@@ -34,8 +34,17 @@ int execute(char *tokens[])
 			}
 		}
 		else /*If I am the father I wait*/
+		{
 			wait(&status);
+			free(tokens[0]);
+			/*validar el estado de salida del hijo*/
+		}
 	}
-	/* manejar el error*/
+	else{
+
+		/* manejar el error*/
+		printf("errno: %d\n", errno);
+		perror(command_name);
+	}
 	return (0);
 }

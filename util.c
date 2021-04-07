@@ -1,26 +1,5 @@
 #include "shell.h"
 
-void rev_string(char *s)
-{
-
-	int len = str_length(s);
-	int index = 0;
-	char hold;
-
-	len--;
-	if (s[0] == '-')
-		index = 1;
-
-	while (index < len)
-	{
-		hold = s[index];
-		s[index] = s[len];
-		s[len] = hold;
-
-		index++;
-		len--;
-	}
-}
 /**
  * str_length - returns the length of a string.
  * @string: pointer to string.
@@ -38,55 +17,54 @@ int str_length(char *string)
 
 /**
  * str_duplicate - duplicates an string
- * @str: String to be copied
+ * @string: String to be copied
  * Return: pointer to the array
  */
 char *str_duplicate(char *string)
 {
-	char *resultado;
-	int string_len, i;
+	char *result;
+	int length, i;
 
 	if (string == NULL)
 		return (NULL);
 
-	string_len = str_length(string);
+	length = str_length(string) + 1;
 
-	resultado = malloc(sizeof(char) * (string_len + 1));
+	result = malloc(sizeof(char) * length);
 
-	if (resultado == NULL)
+	if (result == NULL)
 		return (NULL);
 
-	for (i = 0; i < string_len ; i++)
+	for (i = 0; i < length ; i++)
 	{
-		resultado[i] = string[i];
+		result[i] = string[i];
 	}
 
-	resultado[string_len] = '\0';
-
-	return (resultado);
+	return (result);
 }
 
 /**
- * string_compare - Compare two strings
+ * str_compare - Compare two strings
  * @string1: String one, or the shorter
  * @string2: String two, or the longer
  * @number: number of characters to be compared, 0 if infinite
  * Return: 1 if the strings are equals,0 if the strings are different
  */
-int string_compare(char *string1, char *string2, int number)
+int str_compare(char *string1, char *string2, int number)
 {
 	int iterator;
 
 	if (number == 0) /* infinite longitud */
 	{
 		if (str_length(string1) != str_length(string2))
-			return(0);
+			return (0);
+
 		for (iterator = 0; string1[iterator]; iterator++)
 		{
 			if (string1[iterator] != string2[iterator])
 				return (0);
 		}
-		return(1);
+		return (1);
 	}
 	else /* if there is a number of chars to be compared */
 	{
@@ -102,14 +80,14 @@ int string_compare(char *string1, char *string2, int number)
 /**
  * str_concat - concatenates two strings.
  *
- * @s1: String to be concatenated
+ * @string1: String to be concatenated
  * @string2: String to be concatenated
  *
  * Return: pointer to the array
  */
 char *str_concat(char *string1, char *string2)
 {
-	char *resultado;
+	char *result;
 	int length1 = 0, length2 = 0;
 
 	if (string1 == NULL)
@@ -120,23 +98,23 @@ char *str_concat(char *string1, char *string2)
 		string2 = "";
 	length2 = str_length(string2);
 
-	resultado = malloc(sizeof(char) * (length1 + length2 + 1));
-	if (resultado == NULL)
+	result = malloc(sizeof(char) * (length1 + length2 + 1));
+	if (result == NULL)
 		return (NULL);
 
 	/* copy of string1 */
 	for (length1 = 0; string1[length1] != '\0'; length1++)
-		resultado[length1] = string1[length1];
+		result[length1] = string1[length1];
 	free(string1);
 
 	/* copy of string2 */
 	for (length2 = 0; string2[length2] != '\0'; length2++)
 	{
-		resultado[length1] = string2[length2];
+		result[length1] = string2[length2];
 		length1++;
 	}
 
-	resultado[length1]= '\0';
+	result[length1] = '\0';
 
-	return (resultado);
+	return (result);
 }

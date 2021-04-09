@@ -1,5 +1,7 @@
 #include "shell.h"
 
+extern char *who_i_am;
+
 /**
  * find_program - find a program in path
  *
@@ -13,24 +15,38 @@ char *find_program(char *program_name)
 	char **directories;
 	struct stat sb;
 
+	if (!program_name)
+		return (NULL);
+
 /* the function_name includes the full path */
 	if (program_name[0] == '/')
-		return (program_name);
+		return (str_duplicate(program_name));
 
-	directories = tokenize_path();
+/* if the file exists in the current directory*/
+	if (stat(program_name, &sb) != -1)
+		return (str_duplicate(program_name));
+
+	/*searh for aliases*/
 
 	program_name = str_concat(str_duplicate("/"), program_name);
-
-	for (i = 0; directories[i]; i++)
+	if (!program_name)
+		return (NULL);
+	/*search in the PATH*/
+	directories = tokenize_path();
+	if (!directories)
 	{
-/* appends to directori, the function_name */
+		free(program_name);
+		return (NULL);
+	}
+
+	for (i = 0; directories[i] && directories && program_name; i++)
+	{
+/* appends the function_name to path*/
 		directories[i] = str_concat(directories[i], program_name);
 
-/* stat returns 0 when full path exists */
+/* stat checks if program exists and returns the full path of program*/
 		if (stat(directories[i], &sb) != -1)
 		{
-			/*free(sb);*/
-			/* TODO: verificar errores */
 			errno = 0;
 			path_found = str_duplicate(directories[i]);
 			free_array_of_pointers(directories);
@@ -39,6 +55,7 @@ char *find_program(char *program_name)
 		}
 
 	}
+/*if the program no was founs*/
 	free(program_name);
 	free_array_of_pointers(directories);
 	return (NULL);
@@ -84,7 +101,7 @@ char **tokenize_path()
 		}
 		i++;
 	}
-	/*error de path no encontrado*/
+	/*path not found*/
 	return (NULL);
 }
 

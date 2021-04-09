@@ -1,15 +1,17 @@
 #include "shell.h"
+
+extern char *who_i_am;
+
 /**
  * builtins_structure - search for match and execute the associate builtin
  * @tokens: double pointer which first element is the string to match
  * Return: Returns the return of the function executed is there is a match,
- * otherwise returns NULL.
+ * otherwise returns -1.
  **/
 int builtins_structure(char *tokens[])
 {
 	int iterator, equal;
 	builtins options[] = {
-		{"exit", builtin_exit},
 		{"env", builtin_env},
 		{NULL, NULL}
 	};
@@ -26,5 +28,5 @@ int builtins_structure(char *tokens[])
 		}
 /*if there is no match return -1 */
 	}
-	return (0);
+	return (-1);
 }

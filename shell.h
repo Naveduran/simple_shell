@@ -12,8 +12,8 @@
 #include <sys/stat.h> /*for use of stat function*/
 
 extern char **environ;
-
 int _print(char *string);
+int _print_error(int code, int exec_counter, char *func_name, char *arg);
 
 /*separate the string in tokens using a designed delimiter*/
 char **tokenize(char *string, char *tokens[]);
@@ -36,7 +36,7 @@ typedef struct builtins
 } builtins;
 
 /* close the shell*/
-int builtin_exit(char *tokens[]);
+int builtin_exit(char *tokens[], char *string);
 
 /* shows the environment where the shell runs*/
 int builtin_env(char *tokens[]);

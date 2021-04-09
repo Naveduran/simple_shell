@@ -1,5 +1,7 @@
 #include "shell.h"
 
+extern char *who_i_am;
+
 /**
  * tokenize - this function separate the string using a designed delimiter
  * @string: string to be parsed
@@ -19,11 +21,10 @@ char **tokenize(char *string, char **tokens)
 	}
 
 	tokens = malloc(counter * sizeof(char *));
-
 	if (tokens == NULL)
 	{
-		printf("el malloc no funcionó\n");
-		return (NULL);
+		perror(who_i_am);
+		exit(errno);
 	}
 
 	counter = 0;

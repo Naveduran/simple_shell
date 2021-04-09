@@ -79,7 +79,6 @@ int str_compare(char *string1, char *string2, int number)
 
 /**
  * str_concat - concatenates two strings.
- *
  * @string1: String to be concatenated
  * @string2: String to be concatenated
  *

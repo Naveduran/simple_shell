@@ -1,4 +1,7 @@
 #include "shell.h"
+
+extern char *who_i_am;
+
 /**
  * execute - execute a command with its entire path
  * variables.
@@ -8,43 +11,49 @@
 int execute(char *tokens[])
 {
 	int retval = 0, status;
-	char *command_name = tokens[0];
+	char *command_name = tokens[0], *full_path;
 	pid_t pidd;
 
 	retval = builtins_structure(tokens);
-	if (retval != 0)
+	if (retval != -1)
 		return (retval);
 
-	tokens[0] = find_program(command_name);
+	full_path = find_program(command_name);
 
-	if (tokens[0])
+	if (!full_path)
+	{/* if doesnot found the program */
+		errno = 127;
+		return (127);
+	}
+	else
 	{
 		pidd = fork(); /* create a child process */
 
 		if (pidd == -1)
-			return (-1);
+		{/*error at excecute fork*/
+			perror(who_i_am);
+			exit(EXIT_FAILURE);
+		}
 
-		if (pidd == 0) /* if I am the child, I execute*/
-		{
+		if (pidd == 0)
+		{/* if I am the child, I execute*/
+			tokens[0] = full_path;
 			retval = execve(tokens[0], tokens, environ);
 			if (retval == -1)
-			{
-				printf("./shell: No such file or directory\n");
-				return (-1);
+			{/*error at excecute execve*/
+				perror(who_i_am);
+				exit(EXIT_FAILURE);
 			}
 		}
-		else /*If I am the father I wait*/
-		{
+		else
+		{/*If I am the father I wait*/
 			wait(&status);
-			free(tokens[0]);
 			/*validar el estado de salida del hijo*/
+			if (WIFEXITED(status))
+				errno = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				errno = 128 + WTERMSIG(status);
 		}
-	}
-	else{
-
-		/* manejar el error*/
-		printf("errno: %d\n", errno);
-		perror(command_name);
 	}
 	return (0);
 }

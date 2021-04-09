@@ -1,6 +1,6 @@
 #include "shell.h"
 
-
+char *who_i_am;
 
 /**
  * main - shows a prompt, receives strings from the command line, and erase
@@ -10,51 +10,54 @@
  *
  * Return: zero on succes.
  */
-int main(int argc, char *argv[])
+int main(int argc __attribute__((unused)), char *argv[])
 {
-	char *string = NULL;
+	char *string = NULL, *prompt = "dali<3 ";
 	char **tokens = NULL;
 	size_t size;
-	int string_length = 0, i;
-	name_own = argv[0];
-/*si se han pasado parametros al programa (modo no interactivo)*/
-if (isatty(STDIN_FILENO))
+	int exec_counter = 0, result = 0;
 
-	if (argc > 1)
+	who_i_am = argv[0];
+
+/*checks for interactive mode*/
+	if (!(isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
 	{
-		tokens = malloc(argc * sizeof(char *));
-		for (i = 1; i < argc; i++)
-			*(tokens + i - 1) = argv[i];
-
-		execute(tokens);
-		free(tokens);
-		return (EXIT_SUCCESS);
+		prompt = "";
 	}
-/*si esta en modo interactivo*/
-	while (1)
+	errno = 0;
+
+	while (++exec_counter)
 	{
-/*show the prompt and wait for the input of the user*/
-if (isatty(STDIN_FILENO))
-{
-		_print("dali<3 ");
-}
-		string_length = getline(&string, &size, stdin);
-/* if EOF is the fisrt Char of string, exit*/
-		if (string_length == EOF)
-			exit(EXIT_SUCCESS);
-/*if there are text given to dali<3, execute them*/
-		if (string_length > 1)
+		/*show the prompt and wait for the input of the user*/
+		_print(prompt);
+		result = getline(&string, &size, stdin);
+
+		/* if EOF is the fisrt Char of string, exit*/
+		if (result == EOF)
+			exit(errno);
+
+		/*if there are text given to dali<3, execute them*/
+		if (result > 1)
 		{
-/*replace newline at the end of getline for a null character:*/
-			if (string[string_length - 1] == '\n')
-				string[string_length - 1] = '\0';
 			tokens = tokenize(string, tokens);
 			if (tokens[0])
-				execute(tokens);
+			{
+				if (str_compare("exit", tokens[0], 0))
+					result = builtin_exit(tokens, string);
+				else
+					result = execute(tokens);
+
+				if (result != 0)
+					_print_error(result, exec_counter, tokens[0], tokens[1]);
+			}
 
 			if (tokens)
 				free(tokens);
 			tokens = NULL;
+
 		}
+		if (string)
+			free(string);
+		string = NULL;
 	}
 }

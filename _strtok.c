@@ -24,4 +24,5 @@ char *_strtok(char *line, char *delim)
 			break;
 		}
 	}
+	if (delim[j] == '\0')
 }

@@ -131,7 +131,7 @@ void str_reverse(char *string)
 	int i = 0, length = str_length(string) - 1;
 	char hold;
 
-	while (index < length)
+	while (i < length)
 	{
 		hold = string[i];
 		string[i++] = string[length];

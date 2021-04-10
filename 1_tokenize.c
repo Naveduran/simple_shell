@@ -1,39 +1,36 @@
 #include "shell.h"
-
-
 /**
  * tokenize - this function separate the string using a designed delimiter
  * @string: string to be parsed
  * @tokens: array de tokens
- * @who_i_am: name of the executed file
+ * @program: name of the executed file
  * Return: an array of the different parts of the string
  */
-char **tokenize(char *string, char **tokens, char *who_i_am)
+char **tokenize(char *string, char **tokens, char *program)
 {
-	const char *delimiter = " \n\t";
-	int iterator = 0;
-	int counter = 2;
+	char *delimiter = " \n\t";
+	int i, j, counter = 2;
 
-	for (iterator = 0; string[iterator]; iterator++)
+	for (i = 0; string[i]; i++)
 	{
-		if (string[iterator] == ' ')
-			counter++;
+		for (j = 0; delimiter[j]; j++)
+		{
+			if (string[i] == delimiter[j])
+				counter++;
+		}
 	}
-
 	tokens = malloc(counter * sizeof(char *));
 	if (tokens == NULL)
 	{
-		perror(who_i_am);
+		perror(program);
 		exit(errno);
 	}
-
-	counter = 0;
-	tokens[counter] = strtok(string, delimiter);
-
-	while (tokens[counter++])
+	i = 0;
+	tokens[i] = str_duplicate(_strtok(string, delimiter));
+	while (tokens[i++])
 	{
-		tokens[counter] = strtok(NULL, delimiter);
+		tokens[i] = str_duplicate(_strtok(NULL, delimiter));
 	}
-
+	free(string);
 	return (tokens);
 }

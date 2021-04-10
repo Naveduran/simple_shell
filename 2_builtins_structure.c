@@ -10,6 +10,7 @@ int builtins_structure(char *tokens[])
 {
 	int iterator, equal;
 	builtins options[] = {
+		{"exit", builtin_exit},
 		{"env", builtin_env},
 		{NULL, NULL}
 	};

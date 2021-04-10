@@ -3,10 +3,9 @@
 /**
  * builtin_exit - exit
  * @tokens: an array of the function and the arguments of the functions
- * @string: string to be freed if exit succesfull
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_exit(char *tokens[], char *string)
+int builtin_exit(char *tokens[])
 {
 	int i;
 
@@ -20,8 +19,7 @@ int builtin_exit(char *tokens[], char *string)
 			}
 			errno = atoi(tokens[1]);
 	}
-	free(string);
-	free(tokens);
+	free_array_of_pointers(tokens);
 	exit(errno);
 }
 
@@ -37,6 +35,7 @@ int builtin_env(char *tokens[] __attribute__((unused)))
 	for (iterator = 0; environ[iterator]; iterator++)
 	{
 		_print(environ[iterator]);
+		_print("\n");
 	}
 	return (0);
 }

@@ -11,19 +11,34 @@
 #include <sys/wait.h> /*for wait*/
 #include <sys/stat.h> /*for use of stat function*/
 
+/************* MAIN FUNCTIONS *************/
+
+/* brings the entire environment to be used inside this program*/
 extern char **environ;
-int _print(char *string);
-int _print_error(int code, int exec_counter,
-	char *func_name, char *arg, char *who_i_am);
 
-/*separate the string in tokens using a designed delimiter*/
-char **tokenize(char *string, char **tokens, char *who_i_am);
+/* separate the string in tokens using a designed delimiter*/
+char **tokenize(char *string, char **tokens, char *program);
 
-/*2_execute.c a command with its entire path*/
-int execute(char *tokens[], char *who_i_am);
+/* creates a pointer to a part of a string*/
+char *_strtok(char *line, char *delim);
+
+/* execute a command with its entire path*/
+int execute(char *tokens[], char *program);
 
 /* if match a builtin, executes it */
 int builtins_structure(char *tokens[]);
+
+/* creates an array of the path directories */
+char **tokenize_path();
+
+/* search for program in path */
+char *find_program(char *function_name);
+
+/* frees the memory for directories */
+void free_array_of_pointers(char **directories);
+
+
+/************* STRUCTURES **************/
 
 /**
  * struct builtins - struct for the builtins
@@ -36,21 +51,29 @@ typedef struct builtins
 	int (*function)(char *tokens[]);
 } builtins;
 
+
+/************** BUILTINS **************/
+
 /* close the shell*/
-int builtin_exit(char *tokens[], char *string);
+int builtin_exit(char *tokens[]);
 
 /* shows the environment where the shell runs*/
 int builtin_env(char *tokens[]);
 
-/* find a program in path */
-char *find_program(char *function_name);
 
-/* return array of path directories */
-char **tokenize_path();
+/************** PRINTING FUNCTIONS **************/
 
-/* frees the memory for directories */
-void free_array_of_pointers(char **directories);
+/* prints a string in the standar output*/
+int _print(char *string);
 
+/* prints a string in the standar error*/
+int _printe(char *string);
+
+/* prints a string in the standar error*/
+int _print_error(int errorcode, int exec_counter, char *tokens[], char *prog);
+
+
+/************** HELPERS **************/
 
 /* Counts the number of characters of a string */
 int str_length(char *string);
@@ -63,5 +86,11 @@ int str_compare(char *string1, char *string2, int number);
 
 /* concatenates two strings */
 char *str_concat(char *string1, char *string2);
+
+/* cast from int to string*/
+void long_to_string(long number, char *string, int base);
+
+/* reverse a string */
+void str_reverse(char *string);
 
 #endif /* SHELL_H */

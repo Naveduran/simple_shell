@@ -13,6 +13,8 @@ char *_strtok(char *line, char *delim)
 
 	if (line != NULL)
 	{
-		str = line
+		str = line;
 	}
+
+	for (; *str != '\0'; str++)
 }

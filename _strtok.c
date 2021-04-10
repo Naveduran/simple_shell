@@ -12,4 +12,7 @@ char *_strtok(char *line, char *delim)
 	char *copystr;
 
 	if (line != NULL)
+	{
+		str = line
+	}
 }

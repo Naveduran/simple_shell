@@ -34,6 +34,9 @@ char *_strtok(char *line, char *delim)
 
 	for (; *str != '\0'; str++)
 	{
-		if (*str == delim[j])
+		for (j = 0; delim[j] != '\0'; j++)
+		{
+			if (*str == delim[j])
+		}
 	}
 }

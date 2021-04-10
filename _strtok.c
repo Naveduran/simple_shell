@@ -26,4 +26,6 @@ char *_strtok(char *line, char *delim)
 	}
 	if (delim[j] == '\0')
 		break;
+
+	copystr = str;
 }

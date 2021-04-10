@@ -33,4 +33,7 @@ char *_strtok(char *line, char *delim)
 		return = (NULL);
 
 	for (; *str != '\0'; str++)
+	{
+		if (*str == delim[j])
+	}
 }

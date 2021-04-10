@@ -9,8 +9,7 @@
 char *find_program(char *program_name)
 {
 	int i = 0;
-	char *path_found = NULL;
-	char **directories;
+	char *path_found = NULL, **directories;
 	struct stat sb;
 
 	if (!program_name)
@@ -19,28 +18,19 @@ char *find_program(char *program_name)
 /* the function_name includes the full path */
 	if (program_name[0] == '/' || program_name[0] == '.')
 		return (str_duplicate(program_name));
-
-/* checks for ~ expansion */
-	/*if (program_name[0] == '~')*/
-
-	/*searh for aliases*/
-
+/* checks for ~ expansion, if (program_name[0] == '~'), searh for aliases*/
 	program_name = str_concat(str_duplicate("/"), program_name);
 	if (!program_name)
 		return (NULL);
-	/*search in the PATH*/
-	directories = tokenize_path();
+	directories = tokenize_path();/* search in the PATH */
 	if (!directories)
 	{
 		free(program_name);
 		return (NULL);
 	}
-
 	for (i = 0; directories[i] && directories && program_name; i++)
-	{
-/* appends the function_name to path*/
+	{/* appends the function_name to path */
 		directories[i] = str_concat(directories[i], program_name);
-
 /* stat checks if program exists and returns the full path of program*/
 		if (stat(directories[i], &sb) != -1)
 		{
@@ -50,9 +40,7 @@ char *find_program(char *program_name)
 			free(program_name);
 			return (path_found);
 		}
-
 	}
-/*if the program no was founs*/
 	free(program_name);
 	free_array_of_pointers(directories);
 	return (NULL);

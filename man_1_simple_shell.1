@@ -1,0 +1,76 @@
+.TH man_1_simple_shell 1 "3 abril 2021" "que version"
+.SH NAME
+.B simple_shell - command line interpreter.
+.SH SYNOPSIS
+.IP
+.B ./shell
+.IP
+.I (options)
+
+.SH DESCRIPTION
+
+simple_shell is a command line interpreter, or shell, in the tradition of the first Unix shell written by Ken Thompson in 1971. This shell is intentionally minimalistic, yet includes the basic functionality of a traditional Unix-like command line user interface.
+Standard functions and system calls employed in simple_shell include:
+.B  execve, exit, fork, free, getline, malloc, perror, strtok, wait, write.
+
+.SH Invocation
+
+Compile simple_shell with the flags:
+.P
+.RS
+.B $ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+.P
+.RE
+simple_shell can be run in interactive mode by typing the following command. Note: if in the prompt show ('dali<3'), you are now inside the interactive mode.
+.P
+.RS
+.B $ ./shell
+.P
+.RE
+simple_shell can be run in non-interactive mode through the use of shell scripts, using pipes ('|'):
+.P
+.RS
+.B echo 'ls' | ./shell
+
+.SH EXECUTABLES
+
+Example of executables:
+.IP
+.br
+\&
+.RS
+\&
+.br
+\&
+.br
+\&
+
+.SH BUILTINS
+
+The following builtin commands are:
+
+.IT
+.B exit
+- exits the program
+
+.B
+
+
+Example of builtin command:
+.IP
+.br
+\&
+.RS
+.B \&
+
+.br
+\&
+
+
+.SH BUGS
+
+
+.SH DEVELOPER(s) NOTES
+
+.SH AUTHORS
+Natalia Vera, Jerson Perez y Edher Ramirez.

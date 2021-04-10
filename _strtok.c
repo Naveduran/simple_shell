@@ -44,4 +44,5 @@ char *_strtok(char *line, char *delim)
 			}
 		}
 	}
+	return (copystr);
 }

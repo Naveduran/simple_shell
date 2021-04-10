@@ -30,5 +30,5 @@ char *_strtok(char *line, char *delim)
 	copystr = str;
 
 	if (*copystr == '\0')
-		
+		return = (NULL);
 }

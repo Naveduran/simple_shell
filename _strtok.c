@@ -28,4 +28,7 @@ char *_strtok(char *line, char *delim)
 		break;
 
 	copystr = str;
+
+	if (*copystr == '\0')
+		
 }

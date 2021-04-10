@@ -20,6 +20,7 @@ char *_strtok(char *line, char *delim)
 	{
 		for (j = 0; delim[j] != '\0'; j++)
 		{
+			if (*str == delim[j])
 			break;
 		}
 	}

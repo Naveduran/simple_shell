@@ -10,5 +10,6 @@ char *_strtok(char *line, char *delim)
 	int j;
 	static char *str = NULL;
 	char *copystr;
-	
+
+	if (line != NULL)
 }

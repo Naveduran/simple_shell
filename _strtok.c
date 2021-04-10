@@ -5,3 +5,10 @@
  * @delim: It´s characters we mark off string in parts.
 */
 char *_strtok(char *line, char *delim)
+{
+	int i;
+	int j;
+	static char *str = NULL;
+	char *copystr;
+	
+}

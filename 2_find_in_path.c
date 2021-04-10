@@ -1,7 +1,5 @@
 #include "shell.h"
 
-extern char *who_i_am;
-
 /**
  * find_program - find a program in path
  *
@@ -19,12 +17,11 @@ char *find_program(char *program_name)
 		return (NULL);
 
 /* the function_name includes the full path */
-	if (program_name[0] == '/')
+	if (program_name[0] == '/' || program_name[0] == '.')
 		return (str_duplicate(program_name));
 
-/* if the file exists in the current directory*/
-	if (stat(program_name, &sb) != -1)
-		return (str_duplicate(program_name));
+/* checks for ~ expansion */
+	/*if (program_name[0] == '~')*/
 
 	/*searh for aliases*/
 

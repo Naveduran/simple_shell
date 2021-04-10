@@ -1,14 +1,14 @@
 #include "shell.h"
 
-extern char *who_i_am;
 
 /**
  * tokenize - this function separate the string using a designed delimiter
  * @string: string to be parsed
  * @tokens: array de tokens
+ * @who_i_am: name of the executed file
  * Return: an array of the different parts of the string
  */
-char **tokenize(char *string, char **tokens)
+char **tokenize(char *string, char **tokens, char *who_i_am)
 {
 	const char *delimiter = " \n\t";
 	int iterator = 0;

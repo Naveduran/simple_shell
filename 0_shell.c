@@ -1,7 +1,5 @@
 #include "shell.h"
 
-char *who_i_am;
-
 /**
  * main - shows a prompt, receives strings from the command line, and erase
  * the last newline
@@ -12,7 +10,7 @@ char *who_i_am;
  */
 int main(int argc __attribute__((unused)), char *argv[])
 {
-	char *string = NULL, *prompt = "dali<3 ";
+	char *string = NULL, *who_i_am, *prompt = "dali<3 ";
 	char **tokens = NULL;
 	size_t size;
 	int exec_counter = 0, result = 0;
@@ -39,16 +37,17 @@ int main(int argc __attribute__((unused)), char *argv[])
 		/*if there are text given to dali<3, execute them*/
 		if (result > 1)
 		{
-			tokens = tokenize(string, tokens);
+			tokens = tokenize(string, tokens, who_i_am);
 			if (tokens[0])
 			{
 				if (str_compare("exit", tokens[0], 0))
 					result = builtin_exit(tokens, string);
 				else
-					result = execute(tokens);
+					result = execute(tokens, who_i_am);
 
 				if (result != 0)
-					_print_error(result, exec_counter, tokens[0], tokens[1]);
+					_print_error(result, exec_counter,
+						tokens[0], tokens[1], who_i_am);
 			}
 
 			if (tokens)

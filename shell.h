@@ -13,13 +13,14 @@
 
 extern char **environ;
 int _print(char *string);
-int _print_error(int code, int exec_counter, char *func_name, char *arg);
+int _print_error(int code, int exec_counter,
+	char *func_name, char *arg, char *who_i_am);
 
 /*separate the string in tokens using a designed delimiter*/
-char **tokenize(char *string, char *tokens[]);
+char **tokenize(char *string, char **tokens, char *who_i_am);
 
 /*2_execute.c a command with its entire path*/
-int execute(char *tokens[]);
+int execute(char *tokens[], char *who_i_am);
 
 /* if match a builtin, executes it */
 int builtins_structure(char *tokens[]);

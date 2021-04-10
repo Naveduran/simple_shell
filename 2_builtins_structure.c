@@ -1,7 +1,5 @@
 #include "shell.h"
 
-extern char *who_i_am;
-
 /**
  * builtins_structure - search for match and execute the associate builtin
  * @tokens: double pointer which first element is the string to match

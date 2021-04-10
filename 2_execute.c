@@ -1,14 +1,12 @@
 #include "shell.h"
 
-extern char *who_i_am;
-
 /**
- * execute - execute a command with its entire path
- * variables.
+ * execute - execute a command with its entire path variables.
  * @tokens: contains the entire path of the command to be executed
+ * @who_i_am: name of the executed file
  * Return: If sucess returns zero, otherwise, return -1.
  */
-int execute(char *tokens[])
+int execute(char *tokens[], char *who_i_am)
 {
 	int retval = 0, status;
 	char *command_name = tokens[0], *full_path;

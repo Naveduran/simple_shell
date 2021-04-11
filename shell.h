@@ -60,6 +60,8 @@ int builtin_exit(char *tokens[]);
 /* shows the environment where the shell runs*/
 int builtin_env(char *tokens[]);
 
+/* change the current directory */
+int builtin_cd(char *tokens[]);
 
 /************** PRINTING FUNCTIONS **************/
 

@@ -74,11 +74,11 @@ char **tokenize_path()
 			tokens = malloc(sizeof(char *) * (counter_directories + 1));
 
 			j = 0;
-			tokens[j] = str_duplicate(strtok(PATH, ":"));
+			tokens[j] = str_duplicate(_strtok(PATH, ":"));
 
 			while (tokens[j++])
 			{
-				tokens[j] = str_duplicate(strtok(NULL, ":"));
+				tokens[j] = str_duplicate(_strtok(NULL, ":"));
 			}
 			free(PATH);
 			PATH = NULL;

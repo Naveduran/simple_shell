@@ -12,6 +12,7 @@ int builtins_structure(char *tokens[])
 	builtins options[] = {
 		{"exit", builtin_exit},
 		{"env", builtin_env},
+		{"cd", builtin_cd},
 		{NULL, NULL}
 	};
 

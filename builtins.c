@@ -44,36 +44,45 @@ int builtin_env(char *tokens[] __attribute__((unused)))
  * @tokens: an array of the function and the arguments of the functions
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-	int builtin_cd(char *tokens[])
-	{
-		int retvalue = 0, i = 0, home = 0, now = 0;
-		char *homedir;
+int builtin_cd(char *tokens[])
+{
+    int retvalue= 0, i = 0, home = 0, now = 0;
+		char *homedir = NULL;
 		char *homedirectory[] = {"$HOME", "~", "\0"};
-		char *actualdir;
+		char *actualdir = NULL;
 /* char *options[] = {"-L", "-P", "-e", "-@"}; */
 
+/* set the home directory */
+		while (environ[i])
+		{
+			if (str_compare("HOME=", environ[i], 5))
+			{
+				homedir = str_duplicate(environ[i] + 5);/* falta freezear */
+                break;
+			}
+			i++;
+		}
 /* search for a coincidence to go to the home directory */
+		if (tokens[1] == NULL)
+		{
+			printf("TOKENS[1] == NULL, ENTONCES CAMBIA EL PATH\n");
+			retvalue = chdir(homedir);
+			printf("retvalue = %d\n", retvalue);
+			return (retvalue);
+		}
 		for (; homedirectory[i + 1]; i++)
 		{
 			home = str_compare(tokens[1], homedirectory[i], 0);
 			if (home)
 			{
-/* set the home directory */
-				while (environ[i])
-				{
-					if (str_compare("HOME=", environ[i], 5))
-					{
-						homedir = str_duplicate(environ[i] + 5);
-					}
-				}
 /* change the directory to the home */
-				retvalue = chdir(homedir);
 				return (chdir(homedir));
 			}
 		}
 /* if the actual directory is the same just return*/
-		now = str_compare(tokens[1], getcwd(actualdir));
+/**		if (str_compare("PWD=", environ[i], 4)) */
+		now = str_compare(tokens[1], getcwd(actualdir, 30), 0);
 		if (now)
 			return (0);
-	}
+		return (0);
 }

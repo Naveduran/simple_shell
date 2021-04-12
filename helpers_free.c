@@ -34,22 +34,22 @@ void long_to_string(long number, char *string, int base)
 	str_reverse(string);
 }
 
-
 /**
  * handle_ctrl_c - print the prompt in a new line
  * when the signal SIGINT (ctrl + c) is send to the program
  * Return: nothing.
  */
-void handle_ctrl_c(int opr __attribute__((unused)))
+void handle_ctrl_c(int opr UNUSED)
 {
 	_print("\n");
 	_print(PROMPT_MSG);
 }
 
 /**
- * handle_ctrl_c - print the prompt in a new line
- * when the signal SIGINT (ctrl + c) is send to the program
- * Return: nothing.
+ *  - ..
+ * @p: ..
+ * @o: ..
+ * Return:..
  */
 void free_data(data_of_program *data)
 {
@@ -66,16 +66,16 @@ void free_data(data_of_program *data)
 }
 
 /**
- * handle_ctrl_c - print the prompt in a new line
- * when the signal SIGINT (ctrl + c) is send to the program
- * Return: nothing.
+ *  - ..
+ * @p: ..
+ * @o: ..
+ * Return:..
  */
 void free_data_all(data_of_program *data)
 {
 	free_data(data);
 	free_array_of_pointers(data->env);
 }
-
 
 /**
  * free_array_of_pointers - frees each pointer of an array of pointers and the

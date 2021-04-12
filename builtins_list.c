@@ -13,6 +13,8 @@ int builtins_list(data_of_program *data)
 		{"exit", builtin_exit},
 		{"env", builtin_env},
 		{"cd", builtin_cd},
+		{"setenv", builtin_set_env},
+		{"unsetenv", builtin_unset_env},
 		{NULL, NULL}
 	};
 

@@ -52,9 +52,6 @@ typedef struct builtins
 
 /************* MAIN FUNCTIONS *************/
 
-/* brings the entire environment to be used inside this program*/
-extern char **environ;
-
 /* print the prompt in a new line */
 void handle_ctrl_c(int);
 
@@ -71,7 +68,7 @@ int execute(data_of_program *data);
 int builtins_list(data_of_program *data);
 
 /* creates an array of the path directories */
-char **tokenize_path();
+char **tokenize_path(data_of_program *data);
 
 /* search for program in path */
 void find_program(data_of_program *data);
@@ -132,5 +129,12 @@ void str_reverse(char *string);
 
 void free_data(data_of_program *data);
 void free_data_all(data_of_program *data);
+
+char *env_get_key(char *name, data_of_program *data);
+char *env_set_key(char *key, char *value, data_of_program *data);
+int env_remove_key(char *key, data_of_program *data);
+
+int builtin_set_env(data_of_program *data);
+int builtin_unset_env(data_of_program *data);
 
 #endif /* SHELL_H */

@@ -23,7 +23,7 @@ void find_program(data_of_program *data)
 	data->tokens[0] = str_concat(str_duplicate("/"), data->command_name);
 	if (!data->tokens[0])
 		return;
-	directories = tokenize_path();/* search in the PATH */
+	directories = tokenize_path(data);/* search in the PATH */
 	if (!directories)
 		return;
 	for (i = 0; directories[i] && directories && data->command_name; i++)
@@ -57,43 +57,44 @@ void find_program(data_of_program *data)
  *
  * Return: array of path directories
  */
-char **tokenize_path()
+char **tokenize_path(data_of_program *data)
 {
-	int i = 0, j = 0;
-	int counter_directories = 1;
+	int i = 0;
+	int counter_directories = 2;
 	char **tokens = NULL;
 	char *PATH;
 
-	while (environ[i])
-	{
-		if (str_compare("PATH=", environ[i], 5))
-		{
-
-			/* find the number of directories in the PATH */
-			for (j = 0; environ[i][j]; j++)
-			{
-				if (environ[i][j] == ':')
-					counter_directories++;
-			}
-
-			PATH = str_duplicate(environ[i] + 5);
-			tokens = malloc(sizeof(char *) * (counter_directories + 1));
-
-			j = 0;
-			tokens[j] = str_duplicate(_strtok(PATH, ":"));
-
-			while (tokens[j++])
-			{
-				tokens[j] = str_duplicate(_strtok(NULL, ":"));
-			}
-			free(PATH);
-			PATH = NULL;
-			return (tokens);
-		}
-		i++;
+	/* get the PATH value*/
+	PATH = env_get_key("PATH", data);
+	if (PATH == NULL)
+	{/*path not found*/
+		return (NULL);
 	}
-	/*path not found*/
-	return (NULL);
+
+	PATH = str_duplicate(PATH);
+
+	/* find the number of directories in the PATH */
+	for (i = 0; PATH[i]; i++)
+	{
+		if (PATH[i] == ':')
+			counter_directories++;
+	}
+
+	/* reserve space for the array of pointers */
+	tokens = malloc(sizeof(char *) * counter_directories );
+
+	/*tokenize and duplicate each token of path*/
+	i = 0;
+	tokens[i] = str_duplicate(_strtok(PATH, ":"));
+	while (tokens[i++])
+	{
+		tokens[i] = str_duplicate(_strtok(NULL, ":"));
+	}
+
+	free(PATH);
+	PATH = NULL;
+	return (tokens);
+
 }
 
 

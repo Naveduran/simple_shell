@@ -1,4 +1,7 @@
 #include "shell.h"
+
+void inicialize_data(data_of_program *data, char *argv[], char *env[]);
+
 /**
  * main - shows a prompt, receives strings from the command line, and erase
  * the last newline
@@ -8,12 +11,12 @@
  */
 int main(int argc UNUSED, char *argv[], char *env[])
 {
-	data_of_program data_struct = {NULL, env, argv[0], 0, NULL,NULL};
-	data_of_program *data = &data_struct;
+	data_of_program data_struct = {NULL}, *data = &data_struct;
 	char *prompt = "";
 	size_t size;
 	int error_code = 0, is_interactive = 0;
 
+	inicialize_data(data, argv, env);
 	signal(SIGINT, handle_ctrl_c);
 	errno = 0;
 	if ((isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
@@ -42,4 +45,23 @@ int main(int argc UNUSED, char *argv[], char *env[])
 			free_data_all(data);
 	}
 	return (0);
+}
+
+void inicialize_data(data_of_program *data, char *argv[], char *env[])
+{
+	int i;
+
+	data->program_name = argv[0];
+	data->exec_counter = 0;
+	data->input_line = NULL;
+	data->tokens=NULL;
+	data->command_name = NULL;
+
+	/* copy to memory the environ */
+	data->env = malloc(sizeof(char *) * 40);
+	for (i = 0; env[i]; i++)
+	{
+		data->env[i] = str_duplicate(env[i]);
+	}
+	data->env[i] = NULL;
 }

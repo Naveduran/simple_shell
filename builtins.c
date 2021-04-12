@@ -14,6 +14,7 @@ int builtin_exit(data_of_program *data)
 			if (data->tokens[1][i] < '0' || data->tokens[1][i] > '9')
 			{/*if is not a number*/
 				errno = 2;
+				env_set_key("HOLA", "Como estas bebe?", data);
 				return (2);
 			}
 			errno = atoi(data->tokens[1]);
@@ -30,7 +31,6 @@ int builtin_exit(data_of_program *data)
 int builtin_env(data_of_program *data)
 {
 	int iterator;
-
 	for (iterator = 0; data->env[iterator]; iterator++)
 	{
 		_print(data->env[iterator]);
@@ -53,11 +53,11 @@ int builtin_cd(data_of_program *data)
 /* char *options[] = {"-L", "-P", "-e", "-@"}; */
 
 /* set the home directory */
-		while (environ[i])
+		while (data->env[i])
 		{
-			if (str_compare("HOME=", environ[i], 5))
+			if (str_compare("HOME=", data->env[i], 5))
 			{
-				homedir = str_duplicate(environ[i] + 5);/* falta freezear */
+				homedir = str_duplicate(data->env[i] + 5);/* falta freezear */
                 break;
 			}
 			i++;
@@ -85,4 +85,54 @@ int builtin_cd(data_of_program *data)
 		if (now)
 			return (0);
 		return (0);
+}
+
+/**
+ * builtin_env - shows the environment where the shell runs
+ * @tokens: an array of the function and the arguments of the functions
+ * Return: zero if sucess, or other number if its declared in the arguments
+ */
+int builtin_set_env(data_of_program *data)
+{
+	/* validate args */
+	if (data->tokens[1] == NULL || data->tokens[2] == NULL)
+	{
+		errno = EINVAL;
+		perror(data->command_name);
+		return(5);
+	}
+	if (data->tokens[3] != NULL)
+	{
+		errno = E2BIG;
+		perror(data->command_name);
+		return(5);
+	}
+	env_set_key(data->tokens[1], data->tokens[2], data);
+
+	return (0);
+}
+
+/**
+ * builtin_env - shows the environment where the shell runs
+ * @tokens: an array of the function and the arguments of the functions
+ * Return: zero if sucess, or other number if its declared in the arguments
+ */
+int builtin_unset_env(data_of_program *data)
+{
+	/* validate args */
+	if (data->tokens[1] == NULL)
+	{
+		errno = EINVAL;
+		perror(data->command_name);
+		return(5);
+	}
+	if (data->tokens[2] != NULL)
+	{
+		errno = E2BIG;
+		perror(data->command_name);
+		return(5);
+	}
+	env_remove_key(data->tokens[1], data);
+
+	return (0);
 }

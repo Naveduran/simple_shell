@@ -28,7 +28,6 @@ int main(int argc UNUSED, char *argv[], char *env[])
 /**
  * handle_ctrl_c - print the prompt in a new line
  * when the signal SIGINT (ctrl + c) is send to the program
- * Return: nothing.
  */
 void handle_ctrl_c(int opr UNUSED)
 {

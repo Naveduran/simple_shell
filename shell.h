@@ -53,6 +53,18 @@ typedef struct builtins
 	int (*function)(data_of_program *data);
 } builtins;
 
+/**
+ * struct token_node_name - ...
+ * @token: ...
+ * @length: ..
+ */
+typedef struct token_node_name
+{
+	char *token;
+	int length;
+	struct token_node_name *next;
+} token_node;
+
 /************* MAIN FUNCTIONS *************/
 
 /* */
@@ -62,7 +74,7 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[]);
 void sisifo(char *prompt, int is_interactive,data_of_program *data);
 
 /* Print the prompt in a new line */
-void handle_ctrl_c(int);
+void handle_ctrl_c(int opr UNUSED);
 
 /* Separate the string in tokens using a designed delimiter */
 void tokenize(data_of_program *data);
@@ -83,7 +95,7 @@ char **tokenize_path(data_of_program *data);
 void find_program(data_of_program *data);
 
 
-/************** MEMORY MANAGEMENT **************/
+/************** HELPERS FOR MEMORY MANAGEMENT **************/
 
 /* Frees the memory for directories */
 void free_array_of_pointers(char **directories);
@@ -93,6 +105,7 @@ void free_data(data_of_program *data);
 
 /* */
 void free_data_all(data_of_program *data);
+
 
 /************** BUILTINS **************/
 
@@ -112,7 +125,7 @@ int builtin_set_env(data_of_program *data);
 int builtin_unset_env(data_of_program *data);
 
 
-/************** ENVIRONMENT HELPERS **************/
+/************** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT **************/
 
 /* */
 char *env_get_key(char *name, data_of_program *data);
@@ -124,7 +137,7 @@ int env_set_key(char *key, char *value, data_of_program *data);
 int env_remove_key(char *key, data_of_program *data);
 
 
-/************** PRINTING FUNCTIONS **************/
+/************** HELPERS FOR PRINTING **************/
 
 /* Prints a string in the standar output */
 int _print(char *string);
@@ -136,7 +149,7 @@ int _printe(char *string);
 int _print_error(int errorcode, data_of_program *data);
 
 
-/************** STRING HELPERS **************/
+/************** HELPERS FOR STRINGS MANAGEMENT **************/
 
 /* Counts the number of characters of a string */
 int str_length(char *string);
@@ -155,5 +168,20 @@ void str_reverse(char *string);
 
 /* Cast from int to string */
 void long_to_string(long number, char *string, int base);
+
+
+/************** HELPERS FOR LINKED LISTS MANAGEMENT **************/
+
+/* adds a new node at the end of a token_node list */
+token_node *add_token(token_node **head_list, char *token);
+
+/* deallocate the memory of a list */
+void free_tokens_list(token_node **head);
+
+/* get the node in the index position */
+token_node *get_token_node(token_node *head_list, unsigned int index);
+
+/* get the content of the node in the index position */
+char *get_token_at(token_node *head_list, unsigned int index);
 
 #endif /* SHELL_H */

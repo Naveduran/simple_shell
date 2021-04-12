@@ -31,10 +31,18 @@ int builtin_exit(data_of_program *data)
 int builtin_env(data_of_program *data)
 {
 	int iterator;
-	for (iterator = 0; data->env[iterator]; iterator++)
+
+	if (data->tokens[1] == NULL)
 	{
-		_print(data->env[iterator]);
-		_print("\n");
+		for (iterator = 0; data->env[iterator]; iterator++)
+		{
+			_print(data->env[iterator]);
+			_print("\n");
+		}
+	}
+	else{
+		errno = 2;
+		perror(data->command_name);
 	}
 	return (0);
 }
@@ -136,3 +144,36 @@ int builtin_unset_env(data_of_program *data)
 
 	return (0);
 }
+
+
+/**
+ * builtin_help - shows the environment where the shell runs
+ * @tokens: an array of the function and the arguments of the functions
+ * Return: zero if sucess, or other number if its declared in the arguments
+ */
+int builtin_help(data_of_program *data)
+{
+	/* validate args */
+	if (data->tokens[1] == NULL)
+	{
+		errno = EINVAL;
+		perror(data->command_name);
+		return(5);
+	}
+	if (data->tokens[2] != NULL)
+	{
+		errno = E2BIG;
+		perror(data->command_name);
+		return(5);
+	}
+	builtins help_builds[] = {
+		/*{"exit", builtin_exit_help},
+		{"env", builtin_env},*/
+		{"cd", builtin_cd_help},
+		/*{"setenv", builtin_set_env},
+		{"unsetenv", builtin_unset_env},*/
+		{NULL, NULL}
+	};
+	return (0);
+}
+

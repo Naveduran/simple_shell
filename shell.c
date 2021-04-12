@@ -1,29 +1,77 @@
 #include "shell.h"
 
-void inicialize_data(data_of_program *data, char *argv[], char *env[]);
-
 /**
- * main - shows a prompt, receives strings from the command line, and erase
- * the last newline
+ * main - initialize the variables of the program
  * @argc: number of values received from the command line
  * @argv: values received from the command line
  * Return: zero on succes.
  */
+
 int main(int argc UNUSED, char *argv[], char *env[])
 {
 	data_of_program data_struct = {NULL}, *data = &data_struct;
 	char *prompt = "";
-	size_t size;
-	int error_code = 0, is_interactive = 0;
+	int is_interactive = 0;
 
 	inicialize_data(data, argv, env);
 	signal(SIGINT, handle_ctrl_c);
 	errno = 0;
 	if ((isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
 	{
-		prompt = PROMPT_MSG;/* We in the terminal */
+		prompt = PROMPT_MSG;/* We are in the terminal, interactive mode */
 		is_interactive = 1;
 	}
+	sisifo(prompt, is_interactive, data);
+	return (0);
+}
+
+/**
+ * handle_ctrl_c - print the prompt in a new line
+ * when the signal SIGINT (ctrl + c) is send to the program
+ */
+void handle_ctrl_c(int opr UNUSED)
+{
+	_print("\n");
+	_print(PROMPT_MSG);
+}
+
+/**
+ * inicialize_data - ..
+ * @data: pointer to the structure of data
+ * @argv: array of
+ * @env: ..
+ */
+
+void inicialize_data(data_of_program *data, char *argv[], char *env[])
+{
+	int i;
+
+	data->program_name = argv[0];
+	data->exec_counter = 0;
+	data->input_line = NULL;
+	data->tokens = NULL;
+	data->command_name = NULL;
+
+	/* copy to memory the environ */
+	data->env = malloc(sizeof(char *) * 50);
+	for (i = 0; env[i]; i++)
+	{
+		data->env[i] = str_duplicate(env[i]);
+	}
+	data->env[i] = NULL;
+}
+
+/**
+ * sisifo - its a infinite loop that shows the prompt
+ * @prompt: prompt to be printed
+ * @is_interactive: 1 if is interactive and 0 if not
+ * @data: its a infinite loop that shows the prompt
+ */
+void sisifo(char *prompt, int is_interactive,data_of_program *data)
+{
+	size_t size;
+	int error_code = 0;
+
 	while (++(data->exec_counter))
 	{
 		_print(prompt);
@@ -44,24 +92,4 @@ int main(int argc UNUSED, char *argv[], char *env[])
 		if (!is_interactive)
 			free_data_all(data);
 	}
-	return (0);
-}
-
-void inicialize_data(data_of_program *data, char *argv[], char *env[])
-{
-	int i;
-
-	data->program_name = argv[0];
-	data->exec_counter = 0;
-	data->input_line = NULL;
-	data->tokens=NULL;
-	data->command_name = NULL;
-
-	/* copy to memory the environ */
-	data->env = malloc(sizeof(char *) * 40);
-	for (i = 0; env[i]; i++)
-	{
-		data->env[i] = str_duplicate(env[i]);
-	}
-	data->env[i] = NULL;
 }

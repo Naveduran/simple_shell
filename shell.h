@@ -10,35 +10,31 @@
 #include <sys/types.h> /*for type pid*/
 #include <sys/wait.h> /*for wait*/
 #include <sys/stat.h> /*for use of stat function*/
-
-/************* MAIN FUNCTIONS *************/
-
-/* brings the entire environment to be used inside this program*/
-extern char **environ;
-
-/* separate the string in tokens using a designed delimiter*/
-char **tokenize(char *string, char **tokens, char *program);
-
-/* creates a pointer to a part of a string*/
-char *_strtok(char *line, char *delim);
-
-/* execute a command with its entire path*/
-int execute(char *tokens[], char *program);
-
-/* if match a builtin, executes it */
-int builtins_structure(char *tokens[]);
-
-/* creates an array of the path directories */
-char **tokenize_path();
-
-/* search for program in path */
-char *find_program(char *function_name);
-
-/* frees the memory for directories */
-void free_array_of_pointers(char **directories);
+#define PROMPT_MSG "dali<3 "
+#define UNUSED __attribute__((unused))
 
 
 /************* STRUCTURES **************/
+
+
+/**
+ * typedef struct - struct for the data of the program
+ * @tokens: the name of the builtin
+ * @env: the associated function to be called for each builtin
+ * @program_name: name of the program
+ * @exec_counter: counter of commands executed.
+ * @input_line: string of the getline function.
+ * @command_name: first word that user has tiping.
+ */
+typedef struct data_of_program
+{
+	char **tokens;
+	char **env;
+	char *program_name;
+	int exec_counter;
+	char *input_line;
+	char *command_name;
+} data_of_program;
 
 /**
  * struct builtins - struct for the builtins
@@ -48,20 +44,52 @@ void free_array_of_pointers(char **directories);
 typedef struct builtins
 {
 	char *builtin;
-	int (*function)(char *tokens[]);
+	int (*function)(data_of_program *data);
 } builtins;
+
+
+
+
+/************* MAIN FUNCTIONS *************/
+
+/* brings the entire environment to be used inside this program*/
+extern char **environ;
+
+/* print the prompt in a new line */
+void handle_ctrl_c(int);
+
+/* separate the string in tokens using a designed delimiter*/
+void tokenize(data_of_program *data);
+
+/* creates a pointer to a part of a string*/
+char *_strtok(char *line, char *delim);
+
+/* execute a command with its entire path*/
+int execute(data_of_program *data);
+
+/* if match a builtin, executes it */
+int builtins_list(data_of_program *data);
+
+/* creates an array of the path directories */
+char **tokenize_path();
+
+/* search for program in path */
+void find_program(data_of_program *data);
+
+/* frees the memory for directories */
+void free_array_of_pointers(char **directories);
 
 
 /************** BUILTINS **************/
 
 /* close the shell*/
-int builtin_exit(char *tokens[]);
+int builtin_exit(data_of_program *data);
 
 /* shows the environment where the shell runs*/
-int builtin_env(char *tokens[]);
+int builtin_env(data_of_program *data);
 
 /* change the current directory */
-int builtin_cd(char *tokens[]);
+int builtin_cd(data_of_program *data);
 
 /************** PRINTING FUNCTIONS **************/
 
@@ -72,7 +100,7 @@ int _print(char *string);
 int _printe(char *string);
 
 /* prints a string in the standar error*/
-int _print_error(int errorcode, int exec_counter, char *tokens[], char *prog);
+int _print_error(int errorcode, data_of_program *data);
 
 
 /************** HELPERS **************/
@@ -94,5 +122,15 @@ void long_to_string(long number, char *string, int base);
 
 /* reverse a string */
 void str_reverse(char *string);
+
+
+
+
+
+
+
+
+void free_data(data_of_program *data);
+void free_data_all(data_of_program *data);
 
 #endif /* SHELL_H */

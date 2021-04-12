@@ -6,35 +6,40 @@
  * @argv: values received from the command line
  * Return: zero on succes.
  */
-int main(int argc __attribute__((unused)), char *argv[])
+int main(int argc UNUSED, char *argv[], char *env[])
 {
-	char *string = NULL, *program, *prompt = "", **tokens = NULL;
+	data_of_program data_struct = {NULL, env, argv[0], 0, NULL,NULL};
+	data_of_program *data = &data_struct;
+	char *prompt = "";
 	size_t size;
-	int exec_counter = 0, errorcode = 0;
+	int error_code = 0, is_interactive = 0;
 
-	program = argv[0];
+	signal(SIGINT, handle_ctrl_c);
 	errno = 0;
 	if ((isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
-		prompt = "dali<3 ";/* We in the terminal */
-	while (++exec_counter)
+	{
+		prompt = PROMPT_MSG;/* We in the terminal */
+		is_interactive = 1;
+	}
+	while (++(data->exec_counter))
 	{
 		_print(prompt);
-		errorcode = getline(&string, &size, stdin);
-		if (errorcode == EOF)
+		error_code = getline(&data->input_line, &size, stdin);
+		if (error_code == EOF)
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
-		if (errorcode > 1)
+		if (error_code > 1)
 		{
-			tokens = tokenize(string, tokens, program);
-			if (tokens[0])
+			tokenize(data);
+			if (data->tokens[0])
 			{/* if a text is given to prompt, execute */
-				errorcode = execute(tokens, program);
-				if (errorcode != 0)
-					_print_error(errorcode, exec_counter, tokens, program);
+				error_code = execute(data);
+				if (error_code != 0)
+					_print_error(error_code, data);
 			}
-			if (tokens) /* test */
-				free_array_of_pointers(tokens);
+			free_data(data);
 		}
-		string = NULL;
+		if (!is_interactive)
+			free_data_all(data);
 	}
 	return (0);
 }

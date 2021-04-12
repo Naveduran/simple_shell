@@ -6,44 +6,50 @@
  * @program_name: pointer to string that represent a function name
  * Return: pointer to full path of program or NULL
  */
-char *find_program(char *program_name)
+void find_program(data_of_program *data)
 {
 	int i = 0;
-	char *path_found = NULL, **directories;
+	char **directories;
 	struct stat sb;
 
-	if (!program_name)
-		return (NULL);
+	if (!data->command_name)
+		return;
 
 /* the function_name includes the full path */
-	if (program_name[0] == '/' || program_name[0] == '.')
-		return (str_duplicate(program_name));
+	if (data->command_name[0] == '/' || data->command_name[0] == '.')
+		return;
 /* checks for ~ expansion, if (program_name[0] == '~'), searh for aliases*/
-	program_name = str_concat(str_duplicate("/"), program_name);
-	if (!program_name)
-		return (NULL);
+	free(data->tokens[0]);
+	data->tokens[0] = str_concat(str_duplicate("/"), data->command_name);
+	if (!data->tokens[0])
+		return;
 	directories = tokenize_path();/* search in the PATH */
 	if (!directories)
-	{
-		free(program_name);
-		return (NULL);
-	}
-	for (i = 0; directories[i] && directories && program_name; i++)
+		return;
+	for (i = 0; directories[i] && directories && data->command_name; i++)
 	{/* appends the function_name to path */
-		directories[i] = str_concat(directories[i], program_name);
+		directories[i] = str_concat(directories[i], data->tokens[0]);
 /* stat checks if program exists and returns the full path of program*/
 		if (stat(directories[i], &sb) != -1)
 		{
 			errno = 0;
-			path_found = str_duplicate(directories[i]);
+			free (data->tokens[0]);
+			data->tokens[0] = str_duplicate(directories[i]);
 			free_array_of_pointers(directories);
-			free(program_name);
-			return (path_found);
+			return;
 		}
 	}
-	free(program_name);
+	free (data->tokens[0]);
+	if (stat(data->command_name, &sb) != -1)
+	{
+		errno = 0;
+		data->tokens[0] = data->command_name;
+		free_array_of_pointers(directories);
+		return;
+	}
+	data->tokens[0] = NULL;
 	free_array_of_pointers(directories);
-	return (NULL);
+	return;
 }
 
 /**
@@ -90,22 +96,4 @@ char **tokenize_path()
 	return (NULL);
 }
 
-/**
- * free_array_of_pointers - frees each pointer of an array of pointers and the
- * array too
- * @directories: array of pointers
- * Return: nothing
- */
-void free_array_of_pointers(char **directories)
-{
-	int i;
 
-	if (directories != NULL)
-	{
-		for (i = 0; directories[i]; i++)
-			free(directories[i]);
-
-		free(directories);
-		directories = NULL;
-	}
-}

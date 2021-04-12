@@ -9,8 +9,8 @@ int str_length(char *string)
 {
 	int length = 0;
 
-    if (string == NULL)
-        return (0);
+	if (string == NULL)
+		return (0);
 
 	while (string[length++] != '\0')
 	{
@@ -57,10 +57,12 @@ int str_compare(char *string1, char *string2, int number)
 {
 	int iterator;
 
-    if (string1 == NULL && string2 == NULL)
-        return (1);
-    if (string1 == NULL || string2 == NULL)
-        return (0);
+	if (string1 == NULL && string2 == NULL)
+		return (1);
+
+	if (string1 == NULL || string2 == NULL)
+		return (0);
+
 	if (number == 0) /* infinite longitud */
 	{
 		if (str_length(string1) != str_length(string2))

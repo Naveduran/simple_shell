@@ -4,21 +4,21 @@
  * @tokens: an array of the function and the arguments of the functions
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_exit(char *tokens[])
+int builtin_exit(data_of_program *data)
 {
 	int i;
 
-	if (tokens[1] != NULL)
+	if (data->tokens[1] != NULL)
 	{/*if exists arg for exit, check if is a number*/
-		for (i = 0; tokens[1][i]; i++)
-			if (tokens[1][i] < '0' || tokens[1][i] > '9')
+		for (i = 0; data->tokens[1][i]; i++)
+			if (data->tokens[1][i] < '0' || data->tokens[1][i] > '9')
 			{/*if is not a number*/
 				errno = 2;
 				return (2);
 			}
-			errno = atoi(tokens[1]);
+			errno = atoi(data->tokens[1]);
 	}
-	free_array_of_pointers(tokens);
+	free_data_all(data);
 	exit(errno);
 }
 
@@ -27,13 +27,13 @@ int builtin_exit(char *tokens[])
  * @tokens: an array of the function and the arguments of the functions
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_env(char *tokens[] __attribute__((unused)))
+int builtin_env(data_of_program *data)
 {
 	int iterator;
 
-	for (iterator = 0; environ[iterator]; iterator++)
+	for (iterator = 0; data->env[iterator]; iterator++)
 	{
-		_print(environ[iterator]);
+		_print(data->env[iterator]);
 		_print("\n");
 	}
 	return (0);
@@ -44,7 +44,7 @@ int builtin_env(char *tokens[] __attribute__((unused)))
  * @tokens: an array of the function and the arguments of the functions
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_cd(char *tokens[])
+int builtin_cd(data_of_program *data)
 {
     int retvalue= 0, i = 0, home = 0, now = 0;
 		char *homedir = NULL;
@@ -63,7 +63,7 @@ int builtin_cd(char *tokens[])
 			i++;
 		}
 /* search for a coincidence to go to the home directory */
-		if (tokens[1] == NULL)
+		if (data->tokens[1] == NULL)
 		{
 			printf("TOKENS[1] == NULL, ENTONCES CAMBIA EL PATH\n");
 			retvalue = chdir(homedir);
@@ -72,7 +72,7 @@ int builtin_cd(char *tokens[])
 		}
 		for (; homedirectory[i + 1]; i++)
 		{
-			home = str_compare(tokens[1], homedirectory[i], 0);
+			home = str_compare(data->tokens[1], homedirectory[i], 0);
 			if (home)
 			{
 /* change the directory to the home */
@@ -81,7 +81,7 @@ int builtin_cd(char *tokens[])
 		}
 /* if the actual directory is the same just return*/
 /**		if (str_compare("PWD=", environ[i], 4)) */
-		now = str_compare(tokens[1], getcwd(actualdir, 30), 0);
+		now = str_compare(data->tokens[1], getcwd(actualdir, 30), 0);
 		if (now)
 			return (0);
 		return (0);

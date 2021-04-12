@@ -30,30 +30,30 @@ int _printe(char *string)
  * Return: the number of bytes writed or .
  * On error, -1 is returned, and errno is set appropriately.
  */
-int _print_error(int errorcode, int exec_counter, char *tokens[], char *prog)
+int _print_error(int errorcode, data_of_program *data)
 {
-	char string[4] = {'\0'};
+	char n_as_string[4] = {'\0'};
 
-	long_to_string((long) exec_counter, string, 10);
+	long_to_string((long) data->exec_counter, n_as_string, 10);
 
 	if (errorcode == 2)
 	{
-		_printe(prog);
+		_printe(data->program_name);
 		_printe(": ");
-		_printe(string);
+		_printe(n_as_string);
 		_printe(": ");
-		_printe(tokens[0]);
+		_printe(data->tokens[0]);
 		_printe(": Illegal number: ");
-		_printe(tokens[1]);
+		_printe(data->tokens[1]);
 		_printe("\n");
 	}
 	else if (errorcode == 127)
 	{
-		_printe(prog);
+		_printe(data->program_name);
 		_printe(": ");
-		_printe(string);
+		_printe(n_as_string);
 		_printe(": ");
-		_printe(tokens[0]);
+		_printe(data->tokens[0]);
 		_printe(": not found\n");
 	}
 	return (0);

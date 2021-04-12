@@ -6,31 +6,30 @@
  * @program: name of the executed file
  * Return: an array of the different parts of the string
  */
-char **tokenize(char *string, char **tokens, char *program)
+void tokenize(data_of_program *data)
 {
 	char *delimiter = " \n\t";
 	int i, j, counter = 2;
 
-	for (i = 0; string[i]; i++)
+	for (i = 0; data->input_line[i]; i++)
 	{
 		for (j = 0; delimiter[j]; j++)
 		{
-			if (string[i] == delimiter[j])
+			if (data->input_line[i] == delimiter[j])
 				counter++;
 		}
 	}
-	tokens = malloc(counter * sizeof(char *));
-	if (tokens == NULL)
+	data->tokens = malloc(counter * sizeof(char *));
+	if (data->tokens == NULL)
 	{
-		perror(program);
+		perror(data->program_name);
 		exit(errno);
 	}
 	i = 0;
-	tokens[i] = str_duplicate(_strtok(string, delimiter));
-	while (tokens[i++])
+	data->tokens[i] = str_duplicate(_strtok(data->input_line, delimiter));
+	data->command_name = str_duplicate(data->tokens[0]);
+	while (data->tokens[i++])
 	{
-		tokens[i] = str_duplicate(_strtok(NULL, delimiter));
+		data->tokens[i] = str_duplicate(_strtok(NULL, delimiter));
 	}
-	free(string);
-	return (tokens);
 }

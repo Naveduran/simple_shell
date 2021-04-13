@@ -163,4 +163,8 @@ void str_reverse(char *string);
 /* Cast from int to string */
 void long_to_string(long number, char *string, int base);
 
+/************** HELPERS FOR THE PRINT HELP OF BUILD INTS **************/
+
+int builtin_cd_help(data_of_program *data);
+
 #endif /* SHELL_H */

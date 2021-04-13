@@ -53,18 +53,6 @@ typedef struct builtins
 	int (*function)(data_of_program *data);
 } builtins;
 
-/**
- * struct token_node_name - ...
- * @token: ...
- * @length: ..
- */
-typedef struct token_node_name
-{
-	char *token;
-	int length;
-	struct token_node_name *next;
-} token_node;
-
 /************* MAIN FUNCTIONS *************/
 
 /* */
@@ -75,6 +63,9 @@ void sisifo(char *prompt, int is_interactive,data_of_program *data);
 
 /* Print the prompt in a new line */
 void handle_ctrl_c(int opr UNUSED);
+
+/* */
+int expansions(data_of_program *data);
 
 /* Separate the string in tokens using a designed delimiter */
 void tokenize(data_of_program *data);
@@ -172,23 +163,4 @@ void str_reverse(char *string);
 /* Cast from int to string */
 void long_to_string(long number, char *string, int base);
 
-
-/************** HELPERS FOR LINKED LISTS MANAGEMENT **************/
-
-/* adds a new node at the end of a token_node list */
-token_node *add_token(token_node **head_list, char *token);
-
-/* deallocate the memory of a list */
-void free_tokens_list(token_node **head);
-
-/* get the node in the index position */
-token_node *get_token_node(token_node *head_list, unsigned int index);
-
-/* get the content of the node in the index position */
-char *get_token_at(token_node *head_list, unsigned int index);
-
-/************** BUILDINTD HELP FUNCTION **************/
-
-/* prints the help info for the built in function cd */
-int builtin_cd_help(data_of_program *data);
 #endif /* SHELL_H */

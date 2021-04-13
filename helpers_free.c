@@ -34,6 +34,8 @@ void long_to_string(long number, char *string, int base)
 	str_reverse(string);
 }
 
+
+
 /**
  *  - ..
  * @p: ..

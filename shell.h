@@ -124,6 +124,9 @@ int builtin_set_env(data_of_program *data);
 /* */
 int builtin_unset_env(data_of_program *data);
 
+/**/
+int builtin_help(data_of_program *data);
+
 
 /************** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT **************/
 
@@ -184,4 +187,8 @@ token_node *get_token_node(token_node *head_list, unsigned int index);
 /* get the content of the node in the index position */
 char *get_token_at(token_node *head_list, unsigned int index);
 
+/************** BUILDINTD HELP FUNCTION **************/
+
+/* prints the help info for the built in function cd */
+int builtin_cd_help(data_of_program *data);
 #endif /* SHELL_H */

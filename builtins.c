@@ -142,6 +142,8 @@ int builtin_unset_env(data_of_program *data)
  */
 int builtin_help(data_of_program *data)
 {
+	int i;
+
 	/* validate args */
 	if (data->tokens[1] == NULL)
 	{
@@ -163,6 +165,21 @@ int builtin_help(data_of_program *data)
 		{"unsetenv", builtin_unset_env},*/
 		{NULL, NULL}
 	};
+
+	/*checks for coincidence in the list */
+	for (i = 0; help_builds[i].builtin != NULL; i++)
+	{
+/*if there is a match between the given command and a builtin,*/
+		if ( str_compare(help_builds[i].builtin, data->tokens[1], 0))
+		{
+/*execute the function, and return the return value of the function*/
+			return (help_builds[i].function(data));
+		}
+
+	}
+	/*if there is no match, print error and return -1 */
+	errno = EINVAL;
+	perror(data->command_name);
 	return (0);
 }
 

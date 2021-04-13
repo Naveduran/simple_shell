@@ -31,6 +31,7 @@ int main(int argc UNUSED, char *argv[], char *env[])
  */
 void handle_ctrl_c(int opr UNUSED)
 {
+	printf("I am in the handle ctr_c\n");
 	_print("\n");
 	_print(PROMPT_MSG);
 }
@@ -70,16 +71,17 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 void sisifo(char *prompt, int is_interactive,data_of_program *data)
 {
 	size_t size;
-	int error_code = 0;
+	int error_code = 0, string_len = 0;
 
 	while (++(data->exec_counter))
 	{
 		_print(prompt);
-		error_code = getline(&data->input_line, &size, stdin);
+		error_code = string_len = getline(&data->input_line, &size, stdin);
 		if (error_code == EOF)
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
-		if (error_code > 1)
+		if (string_len > 1)
 		{
+/*			expansions(data);*/
 			tokenize(data);
 			if (data->tokens[0])
 			{/* if a text is given to prompt, execute */

@@ -14,8 +14,6 @@ void find_program(data_of_program *data)
 
 	if (!data->command_name)
 		return;
-
-/* the function_name includes the full path */
 	if (data->command_name[0] == '/' || data->command_name[0] == '.')
 		return;
 /* checks for ~ expansion, if (program_name[0] == '~'), searh for aliases*/
@@ -33,13 +31,13 @@ void find_program(data_of_program *data)
 		if (stat(directories[i], &sb) != -1)
 		{
 			errno = 0;
-			free (data->tokens[0]);
+			free(data->tokens[0]);
 			data->tokens[0] = str_duplicate(directories[i]);
 			free_array_of_pointers(directories);
 			return;
 		}
 	}
-	free (data->tokens[0]);
+	free(data->tokens[0]);
 	if (stat(data->command_name, &sb) != -1)
 	{
 		errno = 0;
@@ -49,7 +47,6 @@ void find_program(data_of_program *data)
 	}
 	data->tokens[0] = NULL;
 	free_array_of_pointers(directories);
-	return;
 }
 
 /**
@@ -81,7 +78,7 @@ char **tokenize_path(data_of_program *data)
 	}
 
 	/* reserve space for the array of pointers */
-	tokens = malloc(sizeof(char *) * counter_directories );
+	tokens = malloc(sizeof(char *) * counter_directories);
 
 	/*tokenize and duplicate each token of path*/
 	i = 0;
@@ -96,5 +93,3 @@ char **tokenize_path(data_of_program *data)
 	return (tokens);
 
 }
-
-

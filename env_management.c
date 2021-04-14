@@ -97,7 +97,7 @@ int env_remove_key(char *key, data_of_program *data)
 			i++;
 			for (; data->env[i]; i++)
 			{
-				data->env[i - 1]= data->env[i];
+				data->env[i - 1] = data->env[i];
 			}
 			/* put the NULL value at the new end of the list */
 			data->env[i - 1] = NULL;

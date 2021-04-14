@@ -47,18 +47,11 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 {
 	int i;
 
-	/* the program name is the first argument */
 	data->program_name = argv[0];
-	/* counter of excecuted comands */
 	data->exec_counter = 0;
-	/* pointer to the input read for _getline */
 	data->input_line = NULL;
-	/* pointer to array of tokenized input */
 	data->tokens = NULL;
-	/* pointer to the first command typed for the user */
 	data->command_name = NULL;
-
-	/* copy to memory the environ */
 	data->env = malloc(sizeof(char *) * 50);
 	for (i = 0; env[i]; i++)
 	{

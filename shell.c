@@ -16,12 +16,13 @@ int main(int argc UNUSED, char *argv[], char *env[])
 
 	inicialize_data(data, argv, env);
 	signal(SIGINT, handle_ctrl_c);
-	errno = 0;
 	if ((isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
 	{
 		prompt = PROMPT_MSG;/* We are in the terminal, interactive mode */
 		is_interactive = 1;
 	}
+
+	errno = 0;
 	sisifo(prompt, is_interactive, data);
 	return (0);
 }

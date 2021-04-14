@@ -18,7 +18,7 @@ char *env_get_key(char *name, data_of_program *data)
 	{
 		if (str_compare(name, data->env[i], name_length))
 		{/*return the value of the key NAME=*/
-			return(data->env[i] + name_length + 1);
+			return (data->env[i] + name_length + 1);
 		}
 	}
 	return (NULL);
@@ -38,7 +38,7 @@ int env_set_key(char *key, char *value, data_of_program *data)
 
 	if (key == NULL || value == NULL || data->env == NULL)
 	{
-		return(1);
+		return (1);
 	}
 	key_length = str_length(key);
 
@@ -83,7 +83,7 @@ int env_remove_key(char *key, data_of_program *data)
 			i++;
 			for (; data->env[i]; i++)
 			{
-				data->env[i - 1]= data->env[i];
+				data->env[i - 1] = data->env[i];
 			}
 			data->env[i - 1] = NULL;
 			return (1);

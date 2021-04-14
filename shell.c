@@ -67,7 +67,7 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
  * @is_interactive: 1 if is interactive and 0 if not
  * @data: its a infinite loop that shows the prompt
  */
-void sisifo(char *prompt, int is_interactive,data_of_program *data)
+void sisifo(char *prompt, int is_interactive, data_of_program *data)
 {
 	int error_code = 0, string_len = 0;
 

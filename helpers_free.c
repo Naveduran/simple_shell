@@ -34,8 +34,6 @@ void long_to_string(long number, char *string, int base)
 	str_reverse(string);
 }
 
-
-
 /**
  *  - ..
  * @p: ..
@@ -52,8 +50,8 @@ void free_data(data_of_program *data)
 		free(data->command_name);
 
 	data->input_line = NULL;
-	data->command_name=NULL;
-	data->tokens= NULL;
+	data->command_name = NULL;
+	data->tokens = NULL;
 }
 
 /**

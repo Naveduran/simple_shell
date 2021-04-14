@@ -2,8 +2,7 @@
 
 /**
  * find_program - find a program in path
- *
- * @program_name: pointer to string that represent a function name
+ * @data: a pointer to the program's data
  * Return: pointer to full path of program or NULL
  */
 void find_program(data_of_program *data)

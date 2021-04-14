@@ -1,8 +1,9 @@
 #include "shell.h"
 /**
- * _strtok - It´s our version of strtok funcion.
- * @line: It´s pointer to array we recive in getline.
+ * _strtok - separates strings with delimiters
+ * @line: It´s pointer to array we receive in getline.
  * @delim: It´s characters we mark off string in parts.
+ * Return: A pointer to the created token
 */
 char *_strtok(char *line, char *delim)
 {

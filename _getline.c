@@ -1,5 +1,12 @@
 #include "shell.h"
 
+/**
+* _getline - read one line from the prompt.
+* @lineptr: pointer to a pointer of char strings.
+*
+* Return: reading counting bytes.
+*/
+
 int _getline(char **lineptr)
 {
 	ssize_t buffer_size = 256;

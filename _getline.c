@@ -23,6 +23,6 @@ int _getline(char **lineptr)
 		{
 			*line = str_concat(*lineptr, line);
 		}
-	}
-	return (count_bytes);
+	}while (bytesread == (buffer_size - 1) && line[bytesread - 1] != '\n');
+return (count_bytes);
 }

@@ -70,13 +70,12 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
  */
 void sisifo(char *prompt, int is_interactive,data_of_program *data)
 {
-	size_t size;
 	int error_code = 0, string_len = 0;
 
 	while (++(data->exec_counter))
 	{
 		_print(prompt);
-		error_code = string_len = getline(&data->input_line, &size, stdin);
+		error_code = string_len = _getline(&data->input_line);
 		if (error_code == EOF)
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
 		if (string_len > 1)

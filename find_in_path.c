@@ -27,13 +27,9 @@ int find_program(data_of_program *data)
 
 	if (!directories || !directories[0])
 	{
-		printf("directories not found\n");
 		errno = 127;
 		return (127);
 	}
-	printf("directories was found\n");
-	printf("directories was found\n");
-	printf("directories:%s\n", directories[0]);
 	for (i = 0; directories[i]; i++)
 	{/* appends the function_name to path */
 		directories[i] = str_concat(directories[i], data->tokens[0]);

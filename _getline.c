@@ -11,7 +11,11 @@ int _getline(char **lineptr)
 	{
 		bytesread = read (STDIN_FILENO, &line, buffer_size - 1);
 		if (bytesread == 0 && count_bytes == 0)
-		return ( - 1);
+			return ( - 1);
+
+		count_bytes += bytesread;
+
+		
 	}
 	return (count_bytes);
 }

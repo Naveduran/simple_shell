@@ -14,8 +14,10 @@ int _getline(char **lineptr)
 			return ( - 1);
 
 		count_bytes += bytesread;
+		line[bytesread] = '\0';
 
-		
+		if (*lineptr == NULL)
+			
 	}
 	return (count_bytes);
 }

@@ -193,4 +193,8 @@ void str_reverse(char *string);
 /* Included in file: shell.c */
 void long_to_string(long number, char *string, int base);
 
+/* concatenates strings to expand the input line */
+/* Included in file: expansions.c */
+void concat_exp(data_of_program *data, char *delim, char *exp, int i, int l);
+
 #endif /* SHELL_H */

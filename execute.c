@@ -1,8 +1,7 @@
 #include "shell.h"
 /**
  * execute - execute a command with its entire path variables.
- * @tokens: contains the entire path of the command to be executed
- * @program: name of the executed file
+ * @data: a pointer to the program's data
  * Return: If sucess returns zero, otherwise, return -1.
  */
 int execute(data_of_program *data)

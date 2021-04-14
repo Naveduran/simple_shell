@@ -23,10 +23,7 @@ int _printe(char *string)
 
 /**
  * _print_error - writes a array of chars in the standart error
- * @errorcode: error code.
- * @exec_counter: counter of comands procesed.
- * @tokens: pointer to the array of chars.
- * @prog: the name of the executable program
+ * @data: a pointer to the program's data'
  * Return: the number of bytes writed or .
  * On error, -1 is returned, and errno is set appropriately.
  */

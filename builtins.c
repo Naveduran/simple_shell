@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  * builtin_exit - exit
  * @tokens: an array of the function and the arguments of the functions
@@ -142,14 +143,12 @@ int builtin_unset_env(data_of_program *data)
  */
 int builtin_help(data_of_program *data)
 {
-	int i;
-
+	int i, length = 0;
 	/* validate args */
 	if (data->tokens[1] == NULL)
 	{
-		errno = EINVAL;
-		perror(data->command_name);
-		return(5);
+		_print(HELP_MSG);
+		return(1);
 	}
 	if (data->tokens[2] != NULL)
 	{
@@ -157,29 +156,25 @@ int builtin_help(data_of_program *data)
 		perror(data->command_name);
 		return(5);
 	}
-	builtins help_builds[] = {
-		/*{"exit", builtin_exit_help},
-		{"env", builtin_env},*/
-		{"cd", builtin_cd_help},
-		/*{"setenv", builtin_set_env},
-		{"unsetenv", builtin_unset_env},*/
-		{NULL, NULL}
-	};
+	char *mensajes[6]={NULL};
+	mensajes[0]= HELP_CD_MSG;
+	mensajes[1]= HELP_EXIT_MSG;
+	mensajes[2]= HELP_ENV_MSG;
+	mensajes[3]= HELP_SETENV_MSG;
+	mensajes[4]= HELP_UNSETENV_MSG;
+	mensajes[5]= HELP_MSG;
 
-	/*checks for coincidence in the list */
-	for (i = 0; help_builds[i].builtin != NULL; i++)
+	for (i = 0; mensajes[i]; i++)
 	{
-/*if there is a match between the given command and a builtin,*/
-		if ( str_compare(help_builds[i].builtin, data->tokens[1], 0))
+		length = str_length(data->tokens[1]);
+		if (str_compare(data->tokens[1], mensajes[i],length))
 		{
-/*execute the function, and return the return value of the function*/
-			return (help_builds[i].function(data));
+			_print(mensajes[i] + length + 1);
+			return (1);
 		}
-
 	}
 	/*if there is no match, print error and return -1 */
 	errno = EINVAL;
 	perror(data->command_name);
 	return (0);
 }
-

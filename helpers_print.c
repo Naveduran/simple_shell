@@ -55,6 +55,13 @@ int _print_error(int errorcode, data_of_program *data)
 		_printe(": not found\n");
 	}
 	else if (errorcode == 126)
-		perror(data->program_name);
+	{
+		_printe(data->program_name);
+		_printe(": ");
+		_printe(n_as_string);
+		_printe(": ");
+		_printe(data->command_name);
+		_printe(": Permission denied\n");
+	}
 	return (0);
 }

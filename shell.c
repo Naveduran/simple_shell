@@ -36,20 +36,24 @@ void handle_ctrl_c(int opr UNUSED)
 }
 
 /**
- * inicialize_data - ..
+ * inicialize_data - inicialize the struct with the info of the program
  * @data: pointer to the structure of data
- * @argv: array of
- * @env: ..
+ * @argv: array of arguments pased to the program execution
+ * @env: environ pased to the program execution
  */
-
 void inicialize_data(data_of_program *data, char *argv[], char *env[])
 {
 	int i;
 
+	/* the program name is the first argument */
 	data->program_name = argv[0];
+	/* counter of excecuted comands */
 	data->exec_counter = 0;
+	/* pointer to the input read for _getline */
 	data->input_line = NULL;
+	/* pointer to array of tokenized input */
 	data->tokens = NULL;
+	/* pointer to the first command typed for the user */
 	data->command_name = NULL;
 
 	/* copy to memory the environ */

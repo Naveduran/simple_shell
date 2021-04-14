@@ -2,7 +2,7 @@
 
 /**
  * builtins_list - search for match and execute the associate builtin
- * @tokens: double pointer which first element is the string to match
+ * @data: a pointer to the program's data
  * Return: Returns the return of the function executed is there is a match,
  * otherwise returns -1.
  **/

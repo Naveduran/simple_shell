@@ -1,4 +1,5 @@
 #ifndef HELPERS_H
+#define HELPERS_H
 
 /* Prompt to be printed */
 #define PROMPT_MSG "dali<3 " /* Needed to work with signal */

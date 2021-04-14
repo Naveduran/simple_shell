@@ -64,19 +64,24 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 /**
  * sisifo - its a infinite loop that shows the prompt
  * @prompt: prompt to be printed
- * @is_interactive: 1 if is interactive and 0 if not
+ * @UNUSED: 1 if is interactive and 0 if not
  * @data: its a infinite loop that shows the prompt
  */
-void sisifo(char *prompt, int is_interactive, data_of_program *data)
+void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 {
 	int error_code = 0, string_len = 0;
+	/*size_t size;*/
 
 	while (++(data->exec_counter))
 	{
 		_print(prompt);
 		error_code = string_len = _getline(&data->input_line);
+		/*error_code = string_len = getline(&data->input_line, &size, stdin)*/
 		if (error_code == EOF)
+		{
+			free_data_all(data);
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
+		}
 		if (string_len > 1)
 		{
 			expansions(data);
@@ -89,7 +94,6 @@ void sisifo(char *prompt, int is_interactive, data_of_program *data)
 			}
 			free_data(data);
 		}
-		if (!is_interactive)
-			free_data_all(data);
+
 	}
 }

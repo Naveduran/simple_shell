@@ -21,7 +21,7 @@ int _getline(char **lineptr)
 			*lineptr = str_duplicate(line);
 		}else
 		{
-			
+			*line = str_concat(*lineptr, line);
 		}
 	}
 	return (count_bytes);

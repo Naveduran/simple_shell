@@ -6,8 +6,11 @@
  */
 void tokenize(data_of_program *data)
 {
-	char *delimiter = " \n\t";
+	char *delimiter = " \t";
 	int i, j, counter = 2;
+
+	if (data->input_line[str_length(data->input_line) - 1] == '\n')
+		data->input_line[str_length(data->input_line) - 1] = '\0';
 
 	for (i = 0; data->input_line[i]; i++)
 	{

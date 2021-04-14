@@ -14,11 +14,7 @@
 
 /************* MACROS **************/
 
-/* Prompt to be printed */
-#define PROMPT_MSG "dali<3 " /* Needed to work with signal */
-
-/* Resume from the unused attibute */
-#define UNUSED __attribute__((unused))
+#include "macros.h" /* for msg help and prompt */
 
 /************* STRUCTURES **************/
 
@@ -63,6 +59,9 @@ void sisifo(char *prompt, int is_interactive,data_of_program *data);
 
 /* Print the prompt in a new line */
 void handle_ctrl_c(int opr UNUSED);
+
+/* read one line of the standar input*/
+int _getline(char **lineptr);
 
 /* */
 int expansions(data_of_program *data);

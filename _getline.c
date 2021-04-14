@@ -17,7 +17,12 @@ int _getline(char **lineptr)
 		line[bytesread] = '\0';
 
 		if (*lineptr == NULL)
+		{
+			*lineptr = str_duplicate(line);
+		}else
+		{
 			
+		}
 	}
 	return (count_bytes);
 }

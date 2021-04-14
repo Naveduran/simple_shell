@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/**
+* _getline - read one line from the prompt.
+* @buffer_size: size of buffer reserve for text.
+* @line: text array.
+* @bytesread: size of bytes return read.
+* @count_bytes: total bytes.
+*/
+
 int _getline(char **lineptr)
 {
 	ssize_t buffer_size = 256;

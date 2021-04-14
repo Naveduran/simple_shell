@@ -13,11 +13,10 @@ int execute(data_of_program *data)
 	if (retval != -1)
 		return (retval);
 
-	find_program(data);
-	if (!data->tokens[0])
+	retval = find_program(data);
+	if (retval)
 	{/* if program not found */
-		errno = 127;
-		return (127);
+		return (retval);
 	}
 	else
 	{
@@ -41,3 +40,5 @@ int execute(data_of_program *data)
 	}
 	return (0);
 }
+
+

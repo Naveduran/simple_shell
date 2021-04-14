@@ -1,51 +1,48 @@
 #include "shell.h"
 
+int check_file(char *full_path);
 /**
  * find_program - find a program in path
  * @data: a pointer to the program's data
- * Return: pointer to full path of program or NULL
+ * Return: 0 if success, errcode otherwise
  */
-void find_program(data_of_program *data)
+int find_program(data_of_program *data)
 {
-	int i = 0;
+	int i = 0, ret_code = 0;
 	char **directories;
-	struct stat sb;
 
 	if (!data->command_name)
-		return;
+		return (2);
+
+	/**if is a full_path or an executable in the same path */
 	if (data->command_name[0] == '/' || data->command_name[0] == '.')
-		return;
-/* checks for ~ expansion, if (program_name[0] == '~'), searh for aliases*/
+		return (check_file(data->command_name));
+
 	free(data->tokens[0]);
 	data->tokens[0] = str_concat(str_duplicate("/"), data->command_name);
 	if (!data->tokens[0])
-		return;
+		return (2);
+
 	directories = tokenize_path(data);/* search in the PATH */
 	if (!directories)
-		return;
-	for (i = 0; directories[i] && directories && data->command_name; i++)
+		return (2);
+
+	for (i = 0; directories[i]; i++)
 	{/* appends the function_name to path */
 		directories[i] = str_concat(directories[i], data->tokens[0]);
-/* stat checks if program exists and returns the full path of program*/
-		if (stat(directories[i], &sb) != -1)
-		{
+		ret_code = check_file(directories[i]);
+		if (ret_code == 0 || ret_code == 126)
+		{/* the file was found, is not a directory and has execute permisions*/
 			errno = 0;
 			free(data->tokens[0]);
 			data->tokens[0] = str_duplicate(directories[i]);
 			free_array_of_pointers(directories);
-			return;
+			return (ret_code);
 		}
-	}
-	free(data->tokens[0]);
-	if (stat(data->command_name, &sb) != -1)
-	{
-		errno = 0;
-		data->tokens[0] = data->command_name;
-		free_array_of_pointers(directories);
-		return;
 	}
 	data->tokens[0] = NULL;
 	free_array_of_pointers(directories);
+	return (ret_code);
 }
 
 /**
@@ -91,4 +88,28 @@ char **tokenize_path(data_of_program *data)
 	PATH = NULL;
 	return (tokens);
 
+}
+
+/**
+ * check_file - checks if exists a file, if it is not a dairectory and
+ * if it has excecution permisions for permisions.
+ * @full_path: pointer to the full file name
+ * Return: 0 on success, or error code if it exists.
+ */
+int check_file(char *full_path)
+{
+	struct stat sb;
+
+	if (stat(full_path, &sb) != -1)
+	{
+		if (S_ISDIR(sb.st_mode) ||  access(full_path, X_OK))
+		{
+			errno = 126;
+			return (126);
+		}
+		return (0);
+	}
+	/*if not exist the file*/
+	errno = 127;
+	return (127);
 }

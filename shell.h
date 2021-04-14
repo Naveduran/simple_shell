@@ -92,7 +92,7 @@ char **tokenize_path(data_of_program *data);
 
 /* Search for program in path */
 /* Included in file: XXXXXX.c */
-void find_program(data_of_program *data);
+int find_program(data_of_program *data);
 
 
 /************** HELPERS FOR MEMORY MANAGEMENT **************/

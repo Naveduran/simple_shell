@@ -50,7 +50,7 @@ void find_program(data_of_program *data)
 
 /**
  * tokenize_path - tokenize the path in directories
- *
+ * @data: a pointer to the program's data
  * Return: array of path directories
  */
 char **tokenize_path(data_of_program *data)

@@ -2,10 +2,9 @@
 
 /**
 * _getline - read one line from the prompt.
-* @buffer_size: size of buffer reserve for text.
-* @line: text array.
-* @bytesread: size of bytes return read.
-* @count_bytes: total bytes.
+* @lineptr: pointer to a pointer of char strings.
+*
+* Return: reading counting bytes.
 */
 
 int _getline(char **lineptr)

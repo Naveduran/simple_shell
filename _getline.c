@@ -7,5 +7,10 @@ int _getline(char **lineptr)
 	ssize_t bytesread;
 	int count_bytes = 0;
 
+	do
+	{
+		bytesread = read (STDIN_FILENO, &line, buffer_size - 1);
+		return ( - 1);
+	}
 	return (count_bytes);
 }

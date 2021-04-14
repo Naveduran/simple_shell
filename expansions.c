@@ -16,10 +16,10 @@ int expansions(data_of_program *data)
 		return (0);
 	for (i = 0; data->input_line[i]; i++)
 	{
-		if (data->input_line[i] == '#')
+		if (data->input_line[i] == '#') /* # comments */
 		{	data->input_line[i] = '\0';
 			return (0);	}
-		if (data->input_line[i] == '$')
+		if (data->input_line[i] == '$') /* $?-> error and $$->pid */
 		{
 			if (data->input_line[i + 1] == '?' || data->input_line[i + 1] == '$')
 			{	del = "$", exp = ex, l = 2;
@@ -29,15 +29,15 @@ int expansions(data_of_program *data)
 					number = (int) getpid();
 				long_to_string((long) number, ex, 10), concat_exp(data, del, exp, i, l);
 			}
-			else
+			else /* expand environment variables p.e. $PATH */
 			{	j = i, k = 0;
-				while (data->input_line[j] != ' ' && data->input_line[j] != '\n')
+				while (data->input_line[j] != ' ' && data->input_line[j] != '\0')
 					var[k] = data->input_line[j], j++, k++;
 				if (env_get_key(vari, data) != NULL)
 				{	del = "$", l = k, exp = env_get_key(vari, data);
 					concat_exp(data, del, exp, i, l); }
 			}
-		}
+		} /* expand ~ */
 		if (data->input_line[i] == '~')
 		{	del = "~", exp = env_get_key("HOME", data), l = 1;
 			if (i == 0)

@@ -30,6 +30,21 @@ int builtin_exit(data_of_program *data)
  */
 int builtin_cd(data_of_program *data UNUSED)
 {
+	char *work_dir;
+	long size = 1000;
+	char *buf = (char *)malloc((size_t)size);
+	char *home_dir = env_get_key("HOME", data);
+	char *new_dir = data->tokens[1];
+
+	if (buf != NULL)
+		work_dir = getcwd(buf, (size_t)size) + 4, free(buf);
+	if (str_compare(new_dir, "-", 0) || str_compare(new_dir, NULL, 0))
+		chdir(home_dir);
+	else if (str_compare(new_dir, work_dir, 0))
+	{
+	}
+	else
+		chdir(new_dir);
 	return (0);
 }
 

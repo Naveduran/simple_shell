@@ -43,10 +43,12 @@ int builtin_help(data_of_program *data)
 	int i, length = 0;
 	char *mensajes[6] = {NULL};
 
+
+	mensajes[0] = HELP_MSG;
 	/* validate args */
 	if (data->tokens[1] == NULL)
 	{
-		_print(HELP_MSG);
+		_print(mensajes[0] + 6);
 		return (1);
 	}
 	if (data->tokens[2] != NULL)
@@ -55,12 +57,11 @@ int builtin_help(data_of_program *data)
 		perror(data->command_name);
 		return (5);
 	}
-	mensajes[0] = HELP_CD_MSG;
 	mensajes[1] = HELP_EXIT_MSG;
 	mensajes[2] = HELP_ENV_MSG;
 	mensajes[3] = HELP_SETENV_MSG;
 	mensajes[4] = HELP_UNSETENV_MSG;
-	mensajes[5] = HELP_MSG;
+	mensajes[5] = HELP_CD_MSG;
 
 	for (i = 0; mensajes[i]; i++)
 	{

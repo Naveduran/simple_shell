@@ -47,6 +47,7 @@ void handle_ctrl_c(int opr UNUSED)
 void inicialize_data(data_of_program *data, char *argv[], char *env[])
 {
 	int i = 0;
+
 	data->program_name = argv[0];
 	data->exec_counter = 0;
 	data->input_line = NULL;
@@ -84,7 +85,7 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 			free_data_all(data);
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
 		}
-		if (string_len > 1)
+		if (string_len >= 1)
 		{
 			expansions(data);
 			tokenize(data);

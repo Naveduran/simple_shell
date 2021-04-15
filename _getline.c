@@ -26,7 +26,6 @@ int _getline(char **lineptr)
 	/*busca saltos de linea*/
 	for (i = 0; other_line[i]; i++)
 	{
-
 		if (other_line[i] == '\n')
 		{
 			other_line[i] = '\0';

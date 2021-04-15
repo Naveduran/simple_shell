@@ -109,3 +109,20 @@ int env_remove_key(char *key, data_of_program *data)
 	}
 	return (0);
 }
+
+
+/**
+ * print_environ - prints the current environ
+ * @data: struct for the program's data
+ * Return: nothing
+ */
+void print_environ(data_of_program *data)
+{
+	int j;
+
+	for (j = 0; data->env[j]; j++)
+	{
+		_print(data->env[j]);
+		_print("\n");
+	}
+}

@@ -1,0 +1,369 @@
+.TH man_1_simple_shell 1 "3 abril 2021" "version 1.0"
+.SH NAME
+.B simple_shell - command line interpreter.
+.SH SYNOPSIS
+.IP
+.B ./hsh
+.IP
+.SH COPYRIGHT
+Shell has Copyright (C) Holberton 2021 de la Free Software Foundation,
+       C ª.
+.SH DESCRIPTION
+  The utility of this language interpreter that shall
+  execute commands read from a command line string, the standard
+  input, or a specified file. The application shall ensure that the
+  commands are executed.
+  Pathname expansion shall not fail due to the size of a file.
+  Shell input and output redirections have an implementation-
+  defined offset maximum that is established in the open file
+  description.
+
+.SH OPTIONS (or CONFORMING TO)
+    The shell utility shall conform to the Base Definitions volume of
+    POSIX.1‐2017, Section 12.2, Utility Syntax Guidelines, with an
+    extension for support of a leading <plus-sign> ('+')
+
+ --help Print usage message to standard output and exit
+          successfully.
+ --posix Change the behavior of shell where the default operation
+           differs from POSIX standard to match standard
+           (posix mode). See ALSO SEE below for reference to
+           document detailing how posix mode affects bash
+           behaviour.
+ --version Displays version information for this shell instance
+           in the standard output and exit successfully.
+
+.SH STDIN
+The standard input shall be used only if one of the following is
+true:
+*  The -s option is specified.
+
+*  The -c option is not specified and no operands are specified.
+
+*  The script executes one or more commands that require input
+   from standard input (such as a read command that does not
+   redirect its input).
+
+   See the INPUT FILES section.
+
+   When the shell is using standard input and it invokes a command
+   that also uses standard input, the shell shall ensure that the
+   standard input file pointer points directly after the command it
+   has read when the command begins execution. It shall not read
+   ahead in such a manner that any characters intended to be read by
+   the invoked command are consumed by the shell (whether
+   interpreted by the shell or not) or that characters that are not
+   read by the invoked command are not seen by the shell. When the
+   command expecting to read standard input is started
+   asynchronously by an interactive shell, it is unspecified whether
+   characters are read by the command or interpreted by the shell.
+
+.SH INPUT FILES
+The input file shall be a text file, except that line lengths
+shall be unlimited. If the input file consists solely of zero or
+more blank lines and comments, sh shall exit with a zero exit
+status.
+
+.SH ARGUMENTS
+If arguments remain after option processing, and neither the -c nor the -s option has been supplied, the first argument is assumed to be the name of a file containing shell commands. If shell is invoked in this fashion, $0 is set to the name of the file, and the positional parameters are set to the remaining arguments. Bash reads and executes commands from this file, then exits. Bash's exit status is the exit status of the last command executed in the script. If no commands are executed, the exit status is 0. An attempt is first made to open the file in the current directory, and, if no file is found, then the shell searches the directories in PATH for the script.
+
+.SH ENVIRONMENT VARIABLES
+The following environment variables shall affect the execution of shell:
+.TP
+ENV
+This variable, when and only when an interactive shell
+is invoked, shall be subjected to parameter expansion
+(see in Expansion) by the shell, and the resulting value
+shall be used as a pathname of a file containing
+shell commands to execute in the current environment.
+The file need not be executable.
+If the expanded value of ENV is not an absolute
+pathname, the results are unspecified.
+ENV shall be ignored if the real and effective user IDs or real and
+effective group IDs of the process are different.
+
+.TP
+HOME
+Determine the pathname of the user's home directory.
+The contents of HOME are used in tilde expansion as
+described in Section 2.6.1, Tilde Expansion.
+.TP
+PATH
+Establish a string formatted as described in the Base
+Definitions volume of POSIX.1‐2017, Chapter 8,
+Environment Variables, used to effect command
+interpretation; see Section 2.9.1.1, Command Search and Execution.
+.TP
+PWD
+This variable shall represent an absolute pathname of
+the current working directory. Assignments to this
+variable may be ignored.
+
+.SH INVOCATION
+./hsh
+
+An interactive shell is one started without non-option arguments and without the -c option whose standard input and error are both connected to terminals (as determined by isatty(3)), or one started with the -i option. PS1 is set and $- includes i if bash is interactive, allowing a shell script or a startup file to test this state.
+The following paragraphs describe how bash executes its startup files. If any of the files exist but cannot be read, bash reports an error. Tildes are expanded in file names as described below under Tilde Expansion in the EXPANSION section.
+When bash is started non-interactively, to run a shell script, for example, it looks for the variable BASH_ENV in the environment, expands its value if it appears there, and uses the expanded value as the name of a file to read and execute. Bash behaves as if the following command were executed:
+
+if [ -n "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+but the value of the PATH variable is not used to search for the file name.
+
+Si se invoca bash con el nombre sh , intenta imitar el
+comportamiento de inicio de versiones históricas de sh tan cerca como
+posible, mientras que también cumple con el estándar POSIX.
+When bash is started in posix mode, as with the --posix command line option, it follows the POSIX standard for startup files. In this mode, interactive shells expand the ENV variable and commands are read and executed from the file whose name is the expanded value. No other startup files are read.
+
+.SH EXIT STATUS
+The exit status of an executed command is the value returned by the waitpid system call or equivalent function. Exit statuses fall between 0 and 255, though, as explained below, the shell may use values above 125 specially. Exit statuses from shell builtins and compound commands are also limited to this range. Under certain circumstances, the shell will use special values to indicate specific failure modes.
+For the shell's purposes, a command which exits with a zero exit status has succeeded. An exit status of zero indicates success. A non-zero exit status indicates failure. When a command terminates on a fatal signal N, bash uses the value of 128+N as the exit status.
+If a command is not found, the child process created to execute it returns a status of 127. If a command is found but is not executable, the return status is 126.
+If a command fails because of an error during expansion or redirection, the exit status is greater than zero.
+Shell builtin commands return a status of 0 (true) if successful, and non-zero (false) if an error occurs while they execute. All builtins return an exit status of 2 to indicate incorrect usage.
+Bash itself returns the exit status of the last command executed, unless a syntax error occurs, in which case it exits with a non-zero value.
+
+The following exit values shall be returned:
+.TP
+0
+The script to be executed consisted solely of zero or
+more blank lines or comments, or both.
+.TP
+1‐125A
+non-interactive shell detected an error other than
+command_file not found or executable, including but not
+limited to syntax, redirection, or variable assignment
+errors.
+.TP
+126
+A specified command_file could not be executed due to an
+[ENOEXEC] error (see Section 2.9.1.1, Command Search and
+Execution, item 2).
+.TP
+127
+A specified command_file could not be found by a non-
+interactive shell.
+.PP
+Otherwise, the shell shall return the exit status of the last
+command it invoked or attempted to invoke
+
+.SH EXPANSIONS
+Expansion is performed on the command line after it has been split into words.
+There are seven kinds of expansion performed: brace expansion, tilde expansion,
+parameter and variable expansion, command substitution, arithmetic expansion,
+word splitting, and pathname expansion.
+The order of expansions is: brace expansion, tilde expansion, parameter,
+variable and arithmetic expansion and command substitution
+(done in a left-to-right fashion), word splitting, and pathname expansion.
+.TP
+Command History List
+When the sh utility is being used interactively, it shall
+maintain a list of commands previously entered from the terminal
+in the file named by the HISTFILE environment variable. The type,
+size, and internal format of this file are unspecified. Multiple
+sh processes can share access to the file for a user, if file
+access permissions allow this; see the description of the
+HISTFILE environment variable.
+
+.SH Simple Command Expansion
+When a simple command is executed, the shell performs the following expansions,
+assignments, and redirections, from left to right.
+.TP
+1.
+The words that the parser has marked as variable assignments
+(those preceding the command name) and redirections are saved for later processing.
+.TP
+2.
+The words that are not variable assignments or redirections are expanded.
+If any words remain after expansion,
+the first word is taken to be the name of the command and the remaining words
+are the arguments.
+.TP
+3.
+Redirections are performed as described above under REDIRECTION.
+.TP
+4.
+The text after the = in each variable assignment undergoes tilde expansion,
+parameter expansion, command substitution, arithmetic expansion,
+and quote removal before being assigned to the variable.
+.PP
+If no command name results, the variable assignments
+affect the current shell environment.
+Otherwise, the variables are added to the environment of the executed command
+and do not affect the current shell environment.
+If any of the assignments attempts to assign a value to a readonly variable,
+an error occurs, and the command exits with a non-zero status.
+If no command name results, redirections are performed,
+but do not affect the current shell environment.
+A redirection error causes the command to exit with a non-zero status.
+If there is a command name left after expansion,
+execution proceeds as described below. Otherwise, the command exits.
+If one of the expansions contained a command substitution,
+the exit status of the command is the exit status of the last command
+substitution performed. If there were no command substitutions,
+the command exits with a status of zero.
+
+.SH COMMAND EXECUTION ENVIROMENT
+The shell has an execution environment, which consists of the following:
+
+- open files inherited by the shell at invocation,
+as modified by redirections supplied to the exec builtin.
+
+- the current working directory as set by cd, pushd, or popd,
+or inherited by the shell at invocation.
+
+.SH SIGNALS
+When bash is interactive, in the absence of any traps,
+it ignores SIGTERM (so that kill 0 does not kill an interactive shell),
+and SIGINT is caught and handled (so that the wait builtin is interruptible).
+In all cases, bash ignores SIGQUIT.
+If job control is in effect, bash ignores SIGTTIN, SIGTTOU, and SIGTSTP.
+
+Non-builtin commands run by bash have signal handlers
+set to the values inherited by the shell from its parent.
+When job control is not in effect, asynchronous commands
+ignore SIGINT and SIGQUIT in addition to these inherited handlers.
+Commands run as a result of command substitution
+ignore the keyboard-generated job control signals SIGTTIN, SIGTTOU, and SIGTSTP.
+
+The shell exits by default upon receipt of a SIGHUP.
+Before exiting, an interactive shell resends the SIGHUP to all jobs,
+running or stopped. Stopped jobs are sent SIGCONT to ensure that they receive
+the SIGHUP. To prevent the shell from sending the signal to a particular job,
+it should be removed from the jobs table with the disown builtin
+(see SHELL BUILTIN COMMANDS below) or marked to not receive SIGHUP using disown -h.
+
+If the huponexit shell option has been set with shopt,
+bash sends a SIGHUP to all jobs when an interactive login shell exits.
+
+If bash is waiting for a command to complete and receives
+a signal for which a trap has been set,
+the trap will not be executed until the command completes.
+When bash is waiting for an asynchronous command via the wait builtin,
+the reception of a signal for which a trap has been set
+will cause the wait builtin to return immediately with an exit status
+greater than 128, immediately after which the trap is executed.
+
+.SH PROMPTING
+When executing interactively, bash displays the primary prompt PS1
+when it is ready to read a command,
+and the secondary prompt PS2 when it needs more input to complete a command.
+The command number and the history number are usually different:
+the history number of a command is its position in the history list,
+which may include commands restored from the history file
+(see HISTORY below),
+while the command number is the position in the
+sequence of commands executed during the current shell session.
+After the string is decoded, it is expanded via parameter expansion,
+command substitution, arithmetic expansion, and quote removal,
+subject to the value of the promptvars shell option
+(see the description of the shopt command under SHELL BUILTIN COMMANDS below).
+
+.SH 
+
+.SH ERRORS (seccion - 2 y 3)
+
+.SH FILES
+.P
+_getline.c
+.P
+builtins_env.c
+.P
+builtins_list.c
+.P
+builtins_more.c
+.P
+env_management.c
+.P
+execute.c
+.P
+expansions.c
+.P
+find_in_path.c
+.P
+helpers_free.c
+.P
+helpers_print.c
+.P
+helpers_string.c
+.P
+macros.h
+.P
+shell.c
+.P
+shell.h
+.P
+str_tok.c
+.P
+tokenize.c
+
+.SH BUILTINS COMMANDS
+Read and execute commands from filename in the current shell environment
+and return the exit status of the last command executed from filename.
+If filename does not contain a slash,
+file names in PATH are used to find the directory containing filename.
+The file searched for in PATH need not be executable.
+When bash is not in posix mode,
+the current directory is searched if no file is found in PATH.
+If the sourcepath option to the shopt builtin command is turned off,
+the PATH is not searched. If any arguments are supplied,
+they become the positional parameters when filename is executed.
+Otherwise the positional parameters are unchanged.
+The return status is the status of the last command exited
+within the script (0 if no commands are executed),
+and false if filename is not found or cannot be read.
+
+The following builtin commands are:
+
+.TP
+cd
+- Change the shell working directory.
+If no argument is given to cd the command will be interpreted as cd $HOME.
+if the argumenthelp is - (cd -), the command will be interpreted as cd $OLDPWD.
+
+.TP
+exit
+- Exit of the simple-shell.
+Exits the shell with a status of N. If N is omitted, the exit status
+is that of the last command executed.
+
+.TP
+env
+- Print environment.
+The env command will be print a complete list of enviroment variables.
+
+.TP
+setenv
+- Change or add an environment variable.
+initialize a new environment variable, or modify an existing one
+When there are not correct numbers of arguments print error message.
+
+.TP
+unsetenv
+- The unsetenv function deletes one variable from the environment.
+Wen there are not correct numbers of arguments print error message.
+
+.TP
+help
+- Display information about builtin commands.
+Displays brief summaries of builtin commands.  If BUILTIN_NAME is
+specified, gives detailed help on all commands matching BUILTIN_NAME,
+otherwise the list of help topics is printed BUILTIN_NAME list.
+
+Example of builtin command:
+.IP
+.br
+\&
+.RS
+.B \&
+
+.br
+\&
+
+
+.SH BUGS
+
+
+.SH DEVELOPER(s) NOTES
+
+.SH AUTHORS
+Natalia Vera, Jerson Perez y Edher Ramirez.

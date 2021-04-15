@@ -40,7 +40,6 @@ int builtin_env(data_of_program *data)
 				return (0);
 			}
 			cpname[i] = data->tokens[1][i];
-
 		}
 		errno = 2;
 		perror(data->command_name);
@@ -59,9 +58,10 @@ int builtin_set_env(data_of_program *data)
 	/* validate args */
 	if (data->tokens[1] == NULL || data->tokens[2] == NULL)
 	{
-		errno = EINVAL;
-		perror(data->command_name);
-		return (5);
+		/*errno = EINVAL;*/
+		/*perror(data->command_name);*/
+		/*return (5);*/
+		return (0);
 	}
 	if (data->tokens[3] != NULL)
 	{
@@ -85,9 +85,9 @@ int builtin_unset_env(data_of_program *data)
 	/* validate args */
 	if (data->tokens[1] == NULL)
 	{
-		errno = EINVAL;
-		perror(data->command_name);
-		return (5);
+		/*errno = EINVAL;*/
+		/*perror(data->command_name);*/
+		return (0);
 	}
 	if (data->tokens[2] != NULL)
 	{

@@ -43,6 +43,7 @@ int find_program(data_of_program *data)
 			return (ret_code);
 		}
 	}
+	free(data->tokens[0]);
 	data->tokens[0] = NULL;
 	free_array_of_pointers(directories);
 	return (ret_code);

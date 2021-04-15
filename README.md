@@ -4,7 +4,9 @@
 > ## Introduction
 This repository contains our own simple version of the shell. It was written in C, as a learning exercise inside Holberton School.
 ### Flowchart
-![](PEGAR EL LINK AQUI)
+
+The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program function in general.
+
 ---
 >## Files
 The files contained in this repository are:

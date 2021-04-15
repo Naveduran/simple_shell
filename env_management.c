@@ -19,7 +19,8 @@ char *env_get_key(char *key, data_of_program *data)
 
 	for (i = 0; data->env[i]; i++)
 	{/* Iterates through the environ and check for coincidence of the vame */
-		if (str_compare(key, data->env[i], key_length))
+		if (str_compare(key, data->env[i], key_length) &&
+		 data->env[i][key_length + 1] == '=')
 		{/* returns the value of the key NAME=  when find it*/
 			return (data->env[i] + key_length + 1);
 		}
@@ -50,7 +51,8 @@ int env_set_key(char *key, char *value, data_of_program *data)
 
 	for (i = 0; data->env[i]; i++)
 	{/* Iterates through the environ and check for coincidence of the vame */
-		if (str_compare(key, data->env[i], key_length))
+		if (str_compare(key, data->env[i], key_length) &&
+		 data->env[i][key_length + 1] == '=')
 		{/* If key already exists */
 			is_new_key = 0;
 			/* free the entire variable, it is new created below */
@@ -89,7 +91,8 @@ int env_remove_key(char *key, data_of_program *data)
 
 	for (i = 0; data->env[i]; i++)
 	{/* iterates through the environ and checks for coincidences */
-		if (str_compare(key, data->env[i], key_length))
+		if (str_compare(key, data->env[i], key_length) &&
+		 data->env[i][key_length + 1] == '=')
 		{/* if key already exists, remove them */
 			free(data->env[i]);
 

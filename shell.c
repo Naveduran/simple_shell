@@ -92,12 +92,15 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 		if (string_len >= 1)
 		{
 			expansions(data);
-			tokenize(data);
-			if (data->tokens[0])
-			{/* if a text is given to prompt, execute */
-				error_code = execute(data);
-				if (error_code != 0)
-					_print_error(error_code, data);
+			if (data->input_line[0] != '\0')
+			{
+				tokenize(data);
+				if (data->tokens[0])
+				{/* if a text is given to prompt, execute */
+					error_code = execute(data);
+					if (error_code != 0)
+						_print_error(error_code, data);
+				}
 			}
 			free_data(data);
 		}

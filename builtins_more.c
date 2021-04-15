@@ -12,7 +12,8 @@ int builtin_exit(data_of_program *data)
 	if (data->tokens[1] != NULL)
 	{/*if exists arg for exit, check if is a number*/
 		for (i = 0; data->tokens[1][i]; i++)
-			if (data->tokens[1][i] < '0' || data->tokens[1][i] > '9')
+			if ((data->tokens[1][i] < '0' || data->tokens[1][i] > '9')
+				&& data->tokens[1][i] != '-' && data->tokens[1][i] != '+')
 			{/*if is not a number*/
 				errno = 2;
 				return (2);

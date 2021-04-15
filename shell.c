@@ -62,6 +62,7 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 		}
 	}
 	data->env[i] = NULL;
+	env = data->env;
 
 }
 
@@ -78,12 +79,15 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 
 	while (++(data->exec_counter))
 	{
+		size_t size;
+
 		_print(prompt);
-		error_code = string_len = _getline(&data->input_line);
-		/*error_code = string_len = getline(&data->input_line, &size, stdin);*/
+		/*error_code = string_len = _getline(&data->input_line);*/
+		error_code = string_len = getline(&data->input_line, &size, stdin);
 		if (error_code == EOF)
 		{
 			free_data_all(data);
+			perror("ERROR");
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
 		}
 		if (string_len >= 1)

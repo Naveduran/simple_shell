@@ -17,7 +17,7 @@ int builtin_exit(data_of_program *data)
 				errno = 2;
 				return (2);
 			}
-		errno = atoi(data->tokens[1]);
+		errno = _atoi(data->tokens[1]);
 	}
 	free_data_all(data);
 	exit(errno);

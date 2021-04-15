@@ -20,7 +20,7 @@ char *env_get_key(char *key, data_of_program *data)
 	for (i = 0; data->env[i]; i++)
 	{/* Iterates through the environ and check for coincidence of the vame */
 		if (str_compare(key, data->env[i], key_length) &&
-		 data->env[i][key_length + 1] == '=')
+		 data->env[i][key_length] == '=')
 		{/* returns the value of the key NAME=  when find it*/
 			return (data->env[i] + key_length + 1);
 		}

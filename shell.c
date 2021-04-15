@@ -46,19 +46,22 @@ void handle_ctrl_c(int opr UNUSED)
  */
 void inicialize_data(data_of_program *data, char *argv[], char *env[])
 {
-	int i;
-
+	int i = 0;
 	data->program_name = argv[0];
 	data->exec_counter = 0;
 	data->input_line = NULL;
 	data->tokens = NULL;
 	data->command_name = NULL;
 	data->env = malloc(sizeof(char *) * 50);
-	for (i = 0; env[i]; i++)
+	if (env)
 	{
-		data->env[i] = str_duplicate(env[i]);
+		for (; env[i]; i++)
+		{
+			data->env[i] = str_duplicate(env[i]);
+		}
 	}
 	data->env[i] = NULL;
+
 }
 
 /**

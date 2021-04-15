@@ -1,5 +1,25 @@
 #include "shell.h"
 
+#define DOLLARS                                                               \
+do {                                                                          \
+	if (data->input_line[i + 1] == '?' || data->input_line[i + 1] == '$')       \
+	{	del = "$", exp = ex, l = 2;                                               \
+		if (data->input_line[i + 1] == '?')                                       \
+			number = errno;                                                         \
+		else                                                                      \
+			number = (int) getpid();                                                \
+		long_to_string((long) number, ex, 10), concat_exp(data, del, exp, i, l);  \
+	}                                                                           \
+	else /* expand environment variables p.e. $PATH */                          \
+	{	j = i, k = 0;                                                             \
+		while (data->input_line[j] != ' ' && data->input_line[j] != '\0')         \
+			var[k] = data->input_line[j], j++, k++;                                 \
+		if (env_get_key(vari, data) != NULL)                                      \
+		{	del = "$", l = k, exp = env_get_key(vari, data);                        \
+			concat_exp(data, del, exp, i, l); }                                     \
+	}                                                                           \
+} while (0)
+
 /**
  * expansions - reeplace the symbols $?, $$ and ~ for the errno,
  * the process id, or the home directory respectively.
@@ -14,30 +34,18 @@ int expansions(data_of_program *data)
 
 	if (data->input_line == NULL)
 		return (0);
+	if (data->input_line[0] == '#')
+	{data->input_line[0] = '\0';
+		return (0);
+	}
 	for (i = 0; data->input_line[i]; i++)
 	{
 		if (data->input_line[i] == '#' && data->input_line[i - 1] == ' ')/*coments*/
 		{	data->input_line[i] = '\0';
 			return (0);	}
 		if (data->input_line[i] == '$') /* $?-> error and $$->pid */
-		{
-			if (data->input_line[i + 1] == '?' || data->input_line[i + 1] == '$')
-			{	del = "$", exp = ex, l = 2;
-				if (data->input_line[i + 1] == '?')
-					number = errno;
-				else
-					number = (int) getpid();
-				long_to_string((long) number, ex, 10), concat_exp(data, del, exp, i, l);
-			}
-			else /* expand environment variables p.e. $PATH */
-			{	j = i, k = 0;
-				while (data->input_line[j] != ' ' && data->input_line[j] != '\0')
-					var[k] = data->input_line[j], j++, k++;
-				if (env_get_key(vari, data) != NULL)
-				{	del = "$", l = k, exp = env_get_key(vari, data);
-					concat_exp(data, del, exp, i, l); }
-			}
-		} /* expand ~ */
+			DOLLARS;
+ /* expand ~ */
 		if (data->input_line[i] == '~')
 		{	del = "~", exp = env_get_key("HOME", data), l = 1;
 			if (i == 0)

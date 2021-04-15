@@ -87,7 +87,6 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 		if (error_code == EOF)
 		{
 			free_data_all(data);
-			perror("ERROR");
 			exit(errno);/* if EOF is the fisrt Char of string, exit*/
 		}
 		if (string_len >= 1)

@@ -7,10 +7,14 @@
 void tokenize(data_of_program *data)
 {
 	char *delimiter = " \t";
-	int i, j, counter = 2;
+	int i, j, counter = 2, length;
 
-	if (data->input_line[str_length(data->input_line) - 1] == '\n')
-		data->input_line[str_length(data->input_line) - 1] = '\0';
+	length = str_length(data->input_line);
+	if (length)
+	{
+		if (data->input_line[length - 1] == '\n')
+			data->input_line[length - 1] = '\0';
+	}
 
 	for (i = 0; data->input_line[i]; i++)
 	{
@@ -20,6 +24,7 @@ void tokenize(data_of_program *data)
 				counter++;
 		}
 	}
+
 	data->tokens = malloc(counter * sizeof(char *));
 	if (data->tokens == NULL)
 	{

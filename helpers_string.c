@@ -36,8 +36,11 @@ char *str_duplicate(char *string)
 	result = malloc(sizeof(char) * length);
 
 	if (result == NULL)
+	{
+		errno = ENOMEM;
+		perror("Error");
 		return (NULL);
-
+	}
 	for (i = 0; i < length ; i++)
 	{
 		result[i] = string[i];
@@ -107,7 +110,11 @@ char *str_concat(char *string1, char *string2)
 
 	result = malloc(sizeof(char) * (length1 + length2 + 1));
 	if (result == NULL)
+	{
+		errno = ENOMEM;
+		perror("Error");
 		return (NULL);
+	}
 
 	/* copy of string1 */
 	for (length1 = 0; string1[length1] != '\0'; length1++)
@@ -122,7 +129,6 @@ char *str_concat(char *string1, char *string2)
 	}
 
 	result[length1] = '\0';
-
 	return (result);
 }
 

@@ -66,7 +66,6 @@ void concat_exp(data_of_program *data, char *delim, char *exp, int i, int l)
 	char *original = NULL;
 
 /* TO DO:comprobar que las funciones funcionan y si no generar error */
-
 	original = str_duplicate(data->input_line);
 	free(data->input_line);
 	data->input_line = str_duplicate(_strtok(original, delim));

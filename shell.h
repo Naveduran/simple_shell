@@ -151,6 +151,9 @@ int env_set_key(char *key, char *value, data_of_program *data);
 /* Included in file: env_management.c */
 int env_remove_key(char *key, data_of_program *data);
 
+/* prints the current environ */
+/* Included in file: env_management.c */
+void print_environ(data_of_program *data);
 
 /************** HELPERS FOR PRINTING **************/
 

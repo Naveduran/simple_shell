@@ -16,7 +16,7 @@ int expansions(data_of_program *data)
 		return (0);
 	for (i = 0; data->input_line[i]; i++)
 	{
-		if (data->input_line[i] == '#') /* # comments */
+		if (data->input_line[i] == '#' && data->input_line[i - 1] == ' ')/*coments*/
 		{	data->input_line[i] = '\0';
 			return (0);	}
 		if (data->input_line[i] == '$') /* $?-> error and $$->pid */

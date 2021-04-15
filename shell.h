@@ -193,8 +193,12 @@ char *str_concat(char *string1, char *string2);
 void str_reverse(char *string);
 
 /* Cast from int to string */
-/* Included in file: shell.c */
+/* Included in file: helpers_numbers.c */
 void long_to_string(long number, char *string, int base);
+
+/* convert an string in to a number */
+/* Included in file: helpers_numbers.c */
+int _atoi(char *s);
 
 /* concatenates strings to expand the input line */
 /* Included in file: expansions.c */

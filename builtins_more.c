@@ -133,10 +133,10 @@ int builtin_alias(data_of_program *data)
 	{
 		if (count_characters(data->tokens[i], "="))
 		{
-			return (set_alias(data->tokens[i], data));
+			set_alias(data->tokens[i], data);
 		}
 		else
-			return (print_alias(data, data->tokens[i]));
+			print_alias(data, data->tokens[i]);
 	}
 
 return (0);

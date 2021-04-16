@@ -26,26 +26,49 @@ int builtin_exit(data_of_program *data)
 
 /**
  * builtin_cd - change the current directory
- * @UNUSED: struct for the program's data
+ * @data: struct for the program's data
  * Return: zero if sucess, or other number if its declared in the arguments
  */
-int builtin_cd(data_of_program *data UNUSED)
+int builtin_cd(data_of_program *data)
 {
-	char *work_dir;
+	char *home_dir = env_get_key("HOME", data), *new_dir = data->tokens[1];
+	char *old_dir = env_get_key("OLDPWD", data), *father_dir;
 	long size = 1000;
-	char *buf = (char *)malloc((size_t)size);
-	char *home_dir = env_get_key("HOME", data);
-	char *new_dir = data->tokens[1];
+	int i, j;
+	char *work_dir = (char *)malloc((size_t)size);
 
-	if (buf != NULL)
-		work_dir = getcwd(buf, (size_t)size) + 4, free(buf);
-	if (str_compare(new_dir, "-", 0) || str_compare(new_dir, NULL, 0))
-		chdir(home_dir);
-	else if (str_compare(new_dir, work_dir, 0))
+	if (work_dir != NULL)
+		getcwd(work_dir, (size_t)size);
+	else /* failed to allocate space for work_dir*/
+		perror(data->program_name), exit(errno);
+
+	if (str_compare(new_dir, "~", 0) || str_compare(new_dir, NULL, 0))
+		env_set_key("OLDPWD", work_dir, data), chdir(home_dir);
+	else if (str_compare(new_dir, "..", 0)) /* This works */
+	{
+		env_set_key("OLDPWD", work_dir, data);
+		j = str_length(work_dir);
+		for (i = j; i != 0; i--)
+		{
+			if (work_dir[i] == '/')
+			{
+				work_dir[i] = '\0';
+				break;
+			}
+		}
+		father_dir = work_dir;
+		chdir(father_dir);
+	}
+	else if (str_compare(new_dir, "/", 0)) /*This works*/
+		env_set_key("OLDPWD", work_dir, data), chdir(("/"));
+	else if (str_compare(new_dir, work_dir, 0)) /*This works*/
 	{
 	}
-	else
-		chdir(new_dir);
+	else if (str_compare(new_dir, "-", 0)) /* I fail here */
+		env_set_key("OLDPWD", work_dir, data), chdir(old_dir);
+	else /*This doesn't work*/
+		env_set_key("OLDPWD", work_dir, data), chdir(new_dir);
+	free(work_dir);
 	return (0);
 }
 

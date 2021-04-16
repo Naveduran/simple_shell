@@ -69,7 +69,6 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 	{
 		data->alias_list[i] = NULL;
 	}
-	
 
 }
 

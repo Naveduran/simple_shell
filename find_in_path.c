@@ -63,7 +63,7 @@ char **tokenize_path(data_of_program *data)
 
 	/* get the PATH value*/
 	PATH = env_get_key("PATH", data);
-	if (PATH == NULL)
+	if (PATH == NULL || PATH[0] == '\0')
 	{/*path not found*/
 		return (NULL);
 	}

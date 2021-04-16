@@ -21,9 +21,9 @@ int _getline(char **lineptr)
 
 		i = 0;
 
-		array_lines[i] = str_duplicate(_strtok(buffer, "\n"));
+		array_lines[i] = str_duplicate(_strtok(buffer, "\n;"));
 		while (array_lines[i++])
-			array_lines[i] = str_duplicate(_strtok(NULL, "\n"));
+			array_lines[i] = str_duplicate(_strtok(NULL, "\n;"));
 
 		array_lines[i] = NULL;
 	}

@@ -28,6 +28,7 @@ void free_data_all(data_of_program *data)
 {
 	free_data(data);
 	free_array_of_pointers(data->env);
+	free_array_of_pointers(data->alias_list);
 }
 
 /**

@@ -93,3 +93,28 @@ int builtin_help(data_of_program *data)
 	perror(data->command_name);
 	return (0);
 }
+
+/**
+ * builtin_alias - add, remove or show aliases
+ * @data: struct for the program's data
+ * Return: zero if sucess, or other number if its declared in the arguments
+ */
+int builtin_alias(data_of_program *data)
+{
+	int i = 0;
+
+	if (data->tokens[1] == NULL)
+		return (print_alias(data, NULL));
+
+	while (data->tokens[++i])
+	{
+		if (count_characters(data->tokens[i], "="))
+		{
+			return (set_alias(data->tokens[i], data));
+		}
+		else
+			return (print_alias(data, data->tokens[i]));
+	}
+
+return (0);
+}

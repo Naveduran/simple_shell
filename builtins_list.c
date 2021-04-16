@@ -16,6 +16,7 @@ int builtins_list(data_of_program *data)
 		{"setenv", builtin_set_env},
 		{"unsetenv", builtin_unset_env},
 		{"help", builtin_help},
+		{"alias", builtin_alias},
 		{NULL, NULL}
 	};
 

@@ -64,6 +64,8 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 	data->env[i] = NULL;
 	env = data->env;
 
+	data->alias_list = malloc(sizeof(char *) * 50);
+
 }
 
 /**

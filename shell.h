@@ -26,6 +26,7 @@
  * @command_name: pointer to the first command typed by the user
  * @tokens: pointer to array of tokenized input
  * @env: copy of the environ
+ * @alias_list: array of pointers with aliases.
  */
 typedef struct info
 {
@@ -35,6 +36,7 @@ typedef struct info
 	char *command_name;
 	char **tokens;
 	char **env;
+	char **alias_list;
 } data_of_program;
 
 /**
@@ -136,6 +138,10 @@ int builtin_unset_env(data_of_program *data);
 /* Included in file: shell.c */
 int builtin_help(data_of_program *data);
 
+/**/
+/* Included in file: shell.c */
+int builtin_alias(data_of_program *data);
+
 
 /************** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT **************/
 
@@ -200,8 +206,21 @@ void long_to_string(long number, char *string, int base);
 /* Included in file: helpers_numbers.c */
 int _atoi(char *s);
 
+/* count the coincidences of character in string */
+/* Included in file: helpers_numbers.c */
+int count_characters(char *string, char *character);
+
 /* concatenates strings to expand the input line */
 /* Included in file: expansions.c */
 void concat_exp(data_of_program *data, char *delim, char *exp, int i, int l);
+
+/* print the list of alias */
+int print_alias(data_of_program *data, char *alias);
+
+/* get the alias name */
+char *get_alias(data_of_program *data, char *alias);
+
+/* set the alias name */
+int set_alias(char *alias_string, data_of_program *data);
 
 #endif /* SHELL_H */

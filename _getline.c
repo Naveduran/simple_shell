@@ -9,40 +9,30 @@
 
 int _getline(char **lineptr)
 {
-	char line[BUFFER_SIZE_GETLINE] = {'\0'}, *temp = NULL;
-	static char *other_line = "";
-	ssize_t bytesread;
-	int count_bytes = 0, i, contador = 0;
+	char buffer[BUFFER_SIZE_GETLINE] = {'\0'};
+	static char *array_lines[10] = {NULL};
+	ssize_t bytes_read, i;
 
-	if (other_line == NULL  || *other_line == '\0')
+	if (!array_lines[0])
 	{
-		bytesread = read(STDIN_FILENO, &line, BUFFER_SIZE_GETLINE - 1);
-		if (bytesread == 0 && count_bytes == 0)
+		bytes_read = read(STDIN_FILENO, &buffer, BUFFER_SIZE_GETLINE - 1);
+		if (bytes_read == 0)
 			return (-1);
-		other_line = str_duplicate(line);
-		contador = 1;
+
+		i = 0;
+
+		array_lines[i] = str_duplicate(_strtok(buffer, "\n"));
+		while (array_lines[i++])
+			array_lines[i] = str_duplicate(_strtok(NULL, "\n"));
+
+		array_lines[i] = NULL;
 	}
 
-	/*busca saltos de linea*/
-	for (i = 0; other_line[i]; i++)
-	{
-		if (other_line[i] == '\n')
-		{
-			other_line[i] = '\0';
-			*lineptr = str_duplicate(other_line);
-			temp = other_line;
-			if (other_line[i + 1] == '\0')
-				other_line = NULL;
-			else
-				other_line = str_duplicate(other_line + i + 1);
-			free(temp);
-			return (str_length(*lineptr));
-		}
-	}
-	free(other_line);
-	other_line = NULL;
-	if (contador == 0)
-		return (-1);
-	else
-		return (0);
+	i = 0;
+	*lineptr = array_lines[i];
+
+	while (array_lines[i++])
+		array_lines[i - 1] = array_lines[i];
+
+	return (str_length(*lineptr));
 }

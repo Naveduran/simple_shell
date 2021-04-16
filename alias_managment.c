@@ -77,8 +77,8 @@ char *get_alias(data_of_program *data, char *alias)
  */
 int set_alias(char *alias_string, data_of_program *data)
 {
-	int i;
-	char buffer[50] = {'0'};
+	int i, j;
+	char buffer[50] = {'0'}, *temp = NULL;
 
 	/* validate the arguments */
 	if (alias_string == NULL ||  data->alias_list == NULL)
@@ -94,16 +94,21 @@ int set_alias(char *alias_string, data_of_program *data)
 	}
 
 	/* Iterates through the alias list and check for coincidence of the varnAme */
-	for (i = 0; data->alias_list[i]; i++)
+	for (j = 0; data->alias_list[j]; j++)
 	{
-		if (str_compare(buffer, data->alias_list[i], str_length(buffer)))
+		if (str_compare(buffer, data->alias_list[j], str_length(buffer)))
 		{
-			free(data->alias_list[i]);
-			data->alias_list[i] = str_duplicate(alias_string);
-			return (0);
+			break;
 		}
 
 	}
-	data->alias_list[i] = str_duplicate(alias_string);
+
+	temp = data->alias_list[j];
+	data->alias_list[j] = str_duplicate(buffer);
+	data->alias_list[j] = str_concat(data->alias_list[j], "='");
+	data->alias_list[j] = str_concat(data->alias_list[j], alias_string + i + 1);
+	data->alias_list[j] = str_concat(data->alias_list[j], "'");
+	if (temp != NULL)
+		free(temp);
 	return (0);
 }

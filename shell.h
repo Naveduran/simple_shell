@@ -44,7 +44,8 @@ typedef struct info
 	char **alias_list;
 	int pre_grep;
 	int now_grep;
-	char **history;
+	char **old_history;
+	char **new_history;
 } data_of_program;
 
 /**

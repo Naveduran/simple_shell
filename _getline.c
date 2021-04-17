@@ -38,11 +38,10 @@ int _getline(char **input_line)
 	*input_line = array_commands[0];
 
 	for (i = 0; array_commands[i]; i++)
+	{
 		array_commands[i] = array_commands[i + 1];
-
-	/*remove the next logical operator*/
-	for (i = 0; array_commands[i]; i++)
 		array_operators[i] = array_operators[i + 1];
+	}
 
 	return (str_length(*input_line));
 }

@@ -1,7 +1,5 @@
 #include "shell.h"
 
-int check_logicals(char *array_commands[], int i, char array_operators[]);
-
 /**
 * _getline - read one line from the prompt.
 * @input_line: pointer to a pointer of char strings.

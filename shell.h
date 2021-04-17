@@ -68,6 +68,8 @@ void handle_ctrl_c(int opr UNUSED);
 /* Included in file: _getline.c*/
 int _getline(char **lineptr);
 
+int check_logicals(char *array_commands[], int i, char array_operators[]);
+
 /* */
 /* Included in file: expansions.c */
 int expansions(data_of_program *data);
@@ -225,5 +227,7 @@ int set_alias(char *alias_string, data_of_program *data);
 
 /* set the work directory */
 int set_directory(data_of_program *data, char *new_dir);
+
+
 
 #endif /* SHELL_H */

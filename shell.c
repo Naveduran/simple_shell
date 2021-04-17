@@ -18,6 +18,7 @@ int main(int argc UNUSED, char *argv[], char *env[])
 	signal(SIGINT, handle_ctrl_c);
 	if ((isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)))
 	{
+		errno = 2;
 		prompt = PROMPT_MSG;/* We are in the terminal, interactive mode */
 		is_interactive = 1;
 	}

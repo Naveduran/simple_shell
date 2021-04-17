@@ -32,7 +32,8 @@ int builtin_exit(data_of_program *data)
 int builtin_cd(data_of_program *data)
 {
 	char *dir_home = env_get_key("HOME", data), *dir_old = NULL;
-	char dir_root[] = "/";
+	char old_dir[128] = {0};
+	int error_code = 0;
 
 	if (data->tokens[1])
 	{
@@ -40,7 +41,11 @@ int builtin_cd(data_of_program *data)
 		{
 			dir_old = env_get_key("OLDPWD", data);
 			if (dir_old)
-				return (set_directory(data, dir_old));
+				error_code = set_directory(data, dir_old);
+			_print(env_get_key("PWD", data));
+			_print("\n");
+
+			return (error_code);
 		}
 		else
 		{
@@ -50,7 +55,7 @@ int builtin_cd(data_of_program *data)
 	else
 	{
 		if (!dir_home)
-			dir_home = dir_root;
+			dir_home = getcwd(old_dir, 128);
 
 		return (set_directory(data, dir_home));
 	}
@@ -75,7 +80,7 @@ int set_directory(data_of_program *data, char *new_dir)
 		err_code = chdir(new_dir);
 		if (err_code == -1)
 		{
-			perror(data->program_name);
+			errno = 2;
 			return (3);
 		}
 		env_set_key("PWD", new_dir, data);

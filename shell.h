@@ -1,6 +1,8 @@
 #ifndef SHELL_H
 #define SHELL_H
 
+/************* LIBRARIES **************/
+
 #include <stdio.h> /* for printf*/
 #include <unistd.h> /* for fork, execve*/
 #include <stdlib.h>
@@ -27,16 +29,22 @@
  * @tokens: pointer to array of tokenized input
  * @env: copy of the environ
  * @alias_list: array of pointers with aliases.
+ * @pre_grep: number of lines in the previous history
+ * @now_grep: number of lines given in this execution
+ * @history: an array to save the commands written in the command line.
  */
 typedef struct info
 {
-	char *program_name;
 	int exec_counter;
+	char *program_name;
 	char *input_line;
 	char *command_name;
 	char **tokens;
 	char **env;
 	char **alias_list;
+	int pre_grep;
+	int now_grep;
+	char **history;
 } data_of_program;
 
 /**
@@ -68,8 +76,6 @@ void handle_ctrl_c(int opr UNUSED);
 /* Included in file: _getline.c*/
 int _getline(char **lineptr);
 
-int check_logicals(char *array_commands[], int i, char array_operators[]);
-
 /* */
 /* Included in file: expansions.c */
 int expansions(data_of_program *data);
@@ -98,7 +104,6 @@ char **tokenize_path(data_of_program *data);
 /* Included in file: XXXXXX.c */
 int find_program(data_of_program *data);
 
-
 /************** HELPERS FOR MEMORY MANAGEMENT **************/
 
 /* Frees the memory for directories */
@@ -112,7 +117,6 @@ void free_data(data_of_program *data);
 /* Free all field of the data */
 /* Included in file: helpers_free.c */
 void free_data_all(data_of_program *data);
-
 
 /************** BUILTINS **************/
 
@@ -144,6 +148,9 @@ int builtin_help(data_of_program *data);
 /* Included in file: shell.c */
 int builtin_alias(data_of_program *data);
 
+/**/
+/* Included in file: history.c */
+int builtin_history(data_of_program *data)
 
 /************** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT **************/
 
@@ -176,7 +183,6 @@ int _printe(char *string);
 /* Prints a string in the standar error */
 /* Included in file: shell.c */
 int _print_error(int errorcode, data_of_program *data);
-
 
 /************** HELPERS FOR STRINGS MANAGEMENT **************/
 
@@ -216,18 +222,18 @@ int count_characters(char *string, char *character);
 /* Included in file: expansions.c */
 void concat_exp(data_of_program *data, char *delim, char *exp, int i, int l);
 
+/************** HELPERS FOR ALIASES **************/
+
 /* print the list of alias */
+/* Included in file:  */
 int print_alias(data_of_program *data, char *alias);
 
 /* get the alias name */
+/* Included in file:  */
 char *get_alias(data_of_program *data, char *alias);
 
 /* set the alias name */
+/* Included in file:  */
 int set_alias(char *alias_string, data_of_program *data);
-
-/* set the work directory */
-int set_directory(data_of_program *data, char *new_dir);
-
-
 
 #endif /* SHELL_H */

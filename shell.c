@@ -47,7 +47,7 @@ void handle_ctrl_c(int opr UNUSED)
  */
 void inicialize_data(data_of_program *data, char *argv[], char *env[])
 {
-	int i = 0;
+	int i = 0, error;
 
 	data->program_name = argv[0];
 	data->exec_counter = 0;
@@ -70,7 +70,11 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 	{
 		data->alias_list[i] = NULL;
 	}
-
+	error = read_history();
+	if (error = 1)
+	{
+		printf("JERSON ARREGLA ESTA STRING EN INITIALIZE\n");
+	}
 }
 
 /**

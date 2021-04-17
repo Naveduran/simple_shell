@@ -223,4 +223,7 @@ char *get_alias(data_of_program *data, char *alias);
 /* set the alias name */
 int set_alias(char *alias_string, data_of_program *data);
 
+/* set the work directory */
+int set_directory(data_of_program *data, char *new_dir);
+
 #endif /* SHELL_H */

@@ -31,44 +31,56 @@ int builtin_exit(data_of_program *data)
  */
 int builtin_cd(data_of_program *data)
 {
-	char *home_dir = env_get_key("HOME", data), *new_dir = data->tokens[1];
-	char *old_dir = env_get_key("OLDPWD", data), *father_dir;
-	long size = 1000;
-	int i, j;
-	char *work_dir = (char *)malloc((size_t)size);
+	char *dir_home = env_get_key("HOME", data), *dir_old = NULL;
+	char dir_root[] = "/";
 
-	if (work_dir != NULL)
-		getcwd(work_dir, (size_t)size);
-	else /* failed to allocate space for work_dir*/
-		perror(data->program_name), exit(errno);
-
-	if (str_compare(new_dir, "~", 0) || str_compare(new_dir, NULL, 0))
-		env_set_key("OLDPWD", work_dir, data), chdir(home_dir);
-	else if (str_compare(new_dir, "..", 0)) /* This works */
+	if (data->tokens[1])
 	{
-		env_set_key("OLDPWD", work_dir, data);
-		j = str_length(work_dir);
-		for (i = j; i != 0; i--)
+		if (str_compare(data->tokens[1], "-", 0))
 		{
-			if (work_dir[i] == '/')
-			{
-				work_dir[i] = '\0';
-				break;
-			}
+			dir_old = env_get_key("OLDPWD", data);
+			if (dir_old)
+				return (set_directory(data, dir_old));
 		}
-		father_dir = work_dir;
-		chdir(father_dir);
+		else
+		{
+			return (set_directory(data, data->tokens[1]));
+		}
 	}
-	else if (str_compare(new_dir, "/", 0)) /*This works*/
-		env_set_key("OLDPWD", work_dir, data), chdir(("/"));
-	else if (str_compare(new_dir, work_dir, 0)) /*This works*/
+	else
 	{
+		if (!dir_home)
+			dir_home = dir_root;
+
+		return (set_directory(data, dir_home));
 	}
-	else if (str_compare(new_dir, "-", 0)) /* I fail here */
-		env_set_key("OLDPWD", work_dir, data), chdir(old_dir);
-	else /*This doesn't work*/
-		env_set_key("OLDPWD", work_dir, data), chdir(new_dir);
-	free(work_dir);
+	return (0);
+}
+
+/**
+ * set_directory - set the work directory
+ * @data: struct for the program's data
+ * @new_dir: path to be set as work directory
+ * Return: zero if sucess, or other number if its declared in the arguments
+ */
+int set_directory(data_of_program *data, char *new_dir)
+{
+	char old_dir[128] = {0};
+	int err_code = 0;
+
+	getcwd(old_dir, 128);
+
+	if (!str_compare(old_dir, new_dir, 0))
+	{
+		err_code = chdir(new_dir);
+		if (err_code == -1)
+		{
+			perror(data->program_name);
+			return (3);
+		}
+		env_set_key("PWD", new_dir, data);
+	}
+	env_set_key("OLDPWD", old_dir, data);
 	return (0);
 }
 

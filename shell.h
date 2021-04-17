@@ -236,4 +236,19 @@ char *get_alias(data_of_program *data, char *alias);
 /* Included in file:  */
 int set_alias(char *alias_string, data_of_program *data);
 
+
+/************** HELPERS FOR HISTORY **************/
+
+/*  */
+/* Included in file:  */
+int read_history(void);
+
+/* */
+/* Included in file:  */
+int add_to_history(data_of_program *data);
+
+/*  */
+/* Included in file:  */
+int save_history(data_of_program *data);
+
 #endif /* SHELL_H */

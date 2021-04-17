@@ -21,12 +21,20 @@ int _getline(char **input_line)
 	if (!array_commands[0] || (array_operators[0] == '&' && errno != 0) ||
 		(array_operators[0] == '|' && errno == 0))
 	{
+		/*free the memory allocated in the array if it exists */
+		for (i = 0; array_commands[i]; i++)
+		{
+			free(array_commands[i]);
+			array_commands[i] = NULL;
+		}
+
 		/* read from the file descriptor int to buff */
 		bytes_read = read(STDIN_FILENO, &buff, BUFFER_SIZE_GETLINE - 1);
 		if (bytes_read == 0)
 			return (-1);
 
 		/* split lines for \n or ; */
+		i = 0;
 		do {
 			array_commands[i] = str_duplicate(_strtok(i ? NULL : buff, "\n;"));
 			/*checks and split for && and || operators*/
@@ -36,7 +44,6 @@ int _getline(char **input_line)
 
 	/*obtains the next command (command 0) and remove it for the array*/
 	*input_line = array_commands[0];
-
 	for (i = 0; array_commands[i]; i++)
 	{
 		array_commands[i] = array_commands[i + 1];

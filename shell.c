@@ -99,7 +99,6 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 		}
 		if (string_len >= 1)
 		{
-			add_to_history(data_of_program *data);
 			expansions(data);
 			tokenize(data);
 			if (data->tokens[0])
@@ -108,9 +107,6 @@ void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 				if (error_code != 0)
 					_print_error(error_code, data);
 			}
-			error_code = save_history(data_of_program *data);
-			if (error_code == 1)
-				printf("ESTO SE IMPRIMIO DESDE SISIFO\n");
 			free_data(data);
 		}
 

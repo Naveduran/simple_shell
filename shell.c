@@ -12,7 +12,7 @@ int main(int argc UNUSED, char *argv[], char *env[])
 {
 	data_of_program data_struct = {NULL}, *data = &data_struct;
 	char *prompt = "";
-	int is_interactive = 0, error_code = 0;
+	int is_interactive = 0;
 
 	inicialize_data(data, argv, env);
 	signal(SIGINT, handle_ctrl_c);
@@ -24,15 +24,7 @@ int main(int argc UNUSED, char *argv[], char *env[])
 	}
 
 	errno = 0;
-	error_code = sisifo(prompt, is_interactive, data);
-	if (error_code == 1)
-		printf("ERROR EN main\n");
-
-	printf("I AM GOING TO THE FUNCTION SAVE_HISTORY\n");
-	error_code = save_history(data);
-	if (error_code == 1)
-		printf("ERROR EN main\n");
-
+	sisifo(prompt, is_interactive, data);
 	return (0);
 }
 
@@ -78,10 +70,10 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 	{
 		data->alias_list[i] = NULL;
 	}
-	error = read_history(data);
+	error = 0/*read_history()*/;
 	if (error == 1)
 	{
-		printf("ERROR EN INITIALIZE\n");
+		printf("JERSON ARREGlA PORFI ESTE ERROR EN INITIALIZE\n");
 	}
 }
 
@@ -91,7 +83,7 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
  * @UNUSED: 1 if is interactive and 0 if not
  * @data: its a infinite loop that shows the prompt
  */
-int sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
+void sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 {
 	int error_code = 0, string_len = 0;
 
@@ -103,13 +95,11 @@ int sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 		if (error_code == EOF)
 		{
 			free_data_all(data);
-			return (1);
+			exit(errno);/* if EOF is the fisrt Char of string, exit*/
 		}
 		if (string_len >= 1)
 		{
-			error_code = add_to_history(data);
-			if (error_code == 1)
-				printf("ERROR EN SISIFO\n");
+			add_to_history(data_of_program *data);
 			expansions(data);
 			tokenize(data);
 			if (data->tokens[0])
@@ -118,7 +108,11 @@ int sisifo(char *prompt, int is_interactive UNUSED, data_of_program *data)
 				if (error_code != 0)
 					_print_error(error_code, data);
 			}
+			error_code = save_history(data_of_program *data);
+			if (error_code == 1)
+				printf("ESTO SE IMPRIMIO DESDE SISIFO\n");
 			free_data(data);
 		}
+
 	}
 }

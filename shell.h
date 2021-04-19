@@ -29,21 +29,22 @@
  * @tokens: pointer to array of tokenized input
  * @env: copy of the environ
  * @alias_list: array of pointers with aliases.
- * @file: the file used to store the history
  * @pre_grep: number of lines in the previous history
- * @new_history: an array to save the commands written in the command line.
+ * @now_grep: number of lines given in this execution
+ * @history: an array to save the commands written in the command line.
  */
 typedef struct info
 {
-	char *program_name;
 	int exec_counter;
+	char *program_name;
 	char *input_line;
 	char *command_name;
 	char **tokens;
 	char **env;
 	char **alias_list;
-	FILE *file;
 	int pre_grep;
+	int now_grep;
+	char **old_history;
 	char **new_history;
 } data_of_program;
 
@@ -66,7 +67,7 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[]);
 
 /* Makes the infinite loop that shows the prompt*/
 /* Included in file: shell.c */
-int sisifo(char *prompt, int is_interactive, data_of_program *data);
+void sisifo(char *prompt, int is_interactive, data_of_program *data);
 
 /* Print the prompt in a new line */
 /* Included in file: shell.c */
@@ -150,7 +151,7 @@ int builtin_alias(data_of_program *data);
 
 /**/
 /* Included in file: history.c */
-int builtin_history(data_of_program *data);
+int builtin_history(data_of_program *data)
 
 /************** HELPERS FOR ENVIRONMENT VARIABLES MANAGEMENT **************/
 
@@ -240,8 +241,8 @@ int set_alias(char *alias_string, data_of_program *data);
 /************** HELPERS FOR HISTORY **************/
 
 /*  */
-/* Included in file: */
-int read_history(data_of_program *data);
+/* Included in file:  */
+int read_history(void);
 
 /* */
 /* Included in file:  */

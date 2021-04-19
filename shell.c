@@ -70,10 +70,10 @@ void inicialize_data(data_of_program *data, char *argv[], char *env[])
 	{
 		data->alias_list[i] = NULL;
 	}
-	error = 0/*read_history()*/;
-	if (error == 1)
+	error = read_history();
+	if (error = 1)
 	{
-		printf("JERSON ARREGlA PORFI ESTE ERROR EN INITIALIZE\n");
+		printf("JERSON ARREGLA ESTA STRING EN INITIALIZE\n");
 	}
 }
 

@@ -1,85 +1,133 @@
 #include "shell.h"
 
-#define DOLLARS                                                               \
-do {                                                                          \
-	if (data->input_line[i + 1] == '?' || data->input_line[i + 1] == '$')       \
-	{	del = "$", exp = ex, l = 2;                                               \
-		if (data->input_line[i + 1] == '?')                                       \
-			number = errno;                                                         \
-		else                                                                      \
-			number = (int) getpid();                                                \
-		long_to_string((long) number, ex, 10), concat_exp(data, del, exp, i, l);  \
-	}                                                                           \
-	else /* expand environment variables p.e. $PATH */                          \
-	{	j = i, k = 0;                                                             \
-		while (data->input_line[j] != ' ' && data->input_line[j] != '\0')         \
-			var[k] = data->input_line[j], j++, k++;                                 \
-		if (env_get_key(vari, data) != NULL)                                      \
-		{	del = "$", l = k, exp = env_get_key(vari, data);                        \
-			concat_exp(data, del, exp, i, l); }                                     \
-	}                                                                           \
-} while (0)
+int buffer_add(char *buffer, char *str_to_add);
+
+
 
 /**
- * expansions - reeplace the symbols $?, $$ and ~ for the errno,
- * the process id, or the home directory respectively.
- * @data: a pointer to the struct that contains the inputline
- * Return: 0 if success or 1 if error
+ * expand_variables - expand variables
+ * @data: a pointer to a struct of the program's data
+ *
+ * Return: nothing, but sets errno.
  */
-
-int expansions(data_of_program *data)
-{	int i = 0, j = 0, k = 0, number = 0, l = 0;
-	char ex[10] = {0}, *exp = NULL, *del = NULL;
-	char *ori = NULL, var[20] = {0}, *vari = var + 1;
+int expand_variables(data_of_program *data)
+{
+	int i, j, was_expanded = 0;
+	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
 	if (data->input_line == NULL)
 		return (0);
-	if (data->input_line[0] == '#')
-	{data->input_line[0] = '\0';
-		return (0);
-	}
-	for (i = 0; data->input_line[i]; i++)
+
+	buffer_add(line, data->input_line);
+
+	for (i = 0; line[i]; i++)
 	{
-		if (data->input_line[i] == '#' && data->input_line[i - 1] == ' ')/*coments*/
-		{	data->input_line[i] = '\0';
-			return (0);	}
-		if (data->input_line[i] == '$') /* $?-> error and $$->pid */
-			DOLLARS;
- /* expand ~ */
-		if (data->input_line[i] == '~')
-		{	del = "~", exp = env_get_key("HOME", data), l = 1;
-			if (i == 0)
-			{	ori = str_duplicate(data->input_line), free(data->input_line);
-				data->input_line = exp;
-				data->input_line = str_concat(str_duplicate(data->input_line), ori + 1);
-				free(ori); }
-			else
-				concat_exp(data, del, exp, i, l);
+		if (line[i] == '#')
+		{
+			line[i] = '\0';
+			i--;
+			was_expanded = 1;
 		}
-	} return (0);
+		else if (line[i] == '$')
+		{
+			if (line[i + 1] == '?')
+			{
+				line[i] = '\0';
+				long_to_string(errno, expansion, 10);
+				buffer_add(line, expansion);
+				buffer_add(line, data->input_line + i + 2);
+			}
+			else if (line[i + 1] == '$')
+			{
+				line[i] = '\0';
+				long_to_string(getpid(), expansion, 10);
+				buffer_add(line, expansion);
+				buffer_add(line, data->input_line + i + 2);
+			}
+			else
+			{
+				for (j = 1; line[i + j] && line[i + j] != ' '; j++)
+					expansion[j - 1] = line[i + j];
+
+				temp = env_get_key(expansion, data);
+				if (temp)
+				{
+					line[i] = '\0';
+					expansion[0] = '\0';
+					buffer_add(expansion, line + i + j);
+					buffer_add(line, temp);
+					buffer_add(line, expansion);
+				}
+			}
+			was_expanded = 1;
+		}
+	}
+	if (was_expanded)
+	{
+		free(data->input_line);
+		data->input_line = str_duplicate(line);
+	}
+	return (0);
 }
 
 /**
- * concat_exp - concatenates strings to expand the input line
+ * expand_alias - expans aliases
  * @data: a pointer to a struct of the program's data
- * @delim: the delimiter used to separate the string
- * @exp: the expasion that needs to be included
- * @i: the posision where original the delimiter was found
- * @l: the lenght of the characters to be expanded
+ *
  * Return: nothing, but sets errno.
  */
-
-void concat_exp(data_of_program *data, char *delim, char *exp, int i, int l)
+int expand_alias(data_of_program *data)
 {
-	char *original = NULL;
+	int i, j, was_expanded = 0;
+	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-/* TO DO:comprobar que las funciones funcionan y si no generar error */
-	original = str_duplicate(data->input_line);
-	free(data->input_line);
-	data->input_line = str_duplicate(_strtok(original, delim));
-	data->input_line = str_concat(data->input_line, exp);
-	data->input_line = str_concat(data->input_line, original + i + l);
-	free(original);
+	if (data->input_line == NULL)
+		return (0);
+
+	buffer_add(line, data->input_line);
+
+	for (i = 0; line[i]; i++)
+	{
+		for (j = 0; line[i + j] && line[i + j] != ' '; j++)
+			expansion[j] = line[i + j];
+		expansion[j] = '\0';
+
+		temp = get_alias(data, expansion);
+		if (temp)
+		{
+			expansion[0] = '\0';
+			buffer_add(expansion, line + i + j);
+			line[i] = '\0';
+			buffer_add(line, temp + 1);
+			line[str_length(line) - 1] = '\0';
+			buffer_add(line, expansion);
+			was_expanded = 1;
+		}
+		break;
+	}
+	if (was_expanded)
+	{
+		free(data->input_line);
+		data->input_line = str_duplicate(line);
+	}
+	return (0);
 }
 
+/**
+ * buffer_add - append string at end of the buffer
+ * @buffer: buffer to be filled
+ * @str_to_add: string to be copied in the buffer
+ * Return: nothing, but sets errno.
+ */
+int buffer_add(char *buffer, char *str_to_add)
+{
+	int length, i;
 
+	length = str_length(buffer);
+	for (i = 0; str_to_add[i]; i++)
+	{
+		buffer[length + i] = str_to_add[i];
+	}
+	buffer[length + i] = '\0';
+	return (length + i);
+}

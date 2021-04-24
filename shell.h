@@ -11,6 +11,7 @@
 #include <sys/wait.h> /* for wait */
 #include <sys/stat.h> /* for use of stat function */
 #include <signal.h> /* for signal management */
+#include <fcntl.h> /* for open files*/
 
 /************* MACROS **************/
 
@@ -21,9 +22,10 @@
 /**
  * struct info- struct for the program's data
  * @program_name: the name of the executable
- * @exec_counter: number of excecuted comands
  * @input_line: pointer to the input read for _getline
  * @command_name: pointer to the first command typed by the user
+ * @exec_counter: number of excecuted comands
+ * @file_descriptor: file descriptor to the input of commands
  * @tokens: pointer to array of tokenized input
  * @env: copy of the environ
  * @alias_list: array of pointers with aliases.
@@ -31,9 +33,10 @@
 typedef struct info
 {
 	char *program_name;
-	int exec_counter;
 	char *input_line;
 	char *command_name;
+	int exec_counter;
+	int file_descriptor;
 	char **tokens;
 	char **env;
 	char **alias_list;
@@ -54,11 +57,11 @@ typedef struct builtins
 
 /* Inicialize the struct with the info of the program */
 /* Included in file: shell.c */
-void inicialize_data(data_of_program *data, char *argv[], char *env[]);
+void inicialize_data(data_of_program *data, int arc, char *argv[], char **env);
 
 /* Makes the infinite loop that shows the prompt*/
 /* Included in file: shell.c */
-void sisifo(char *prompt, int is_interactive, data_of_program *data);
+void sisifo(char *prompt, data_of_program *data);
 
 /* Print the prompt in a new line */
 /* Included in file: shell.c */
@@ -66,9 +69,9 @@ void handle_ctrl_c(int opr UNUSED);
 
 /* Read one line of the standar input*/
 /* Included in file: _getline.c*/
-int _getline(char **lineptr);
+int _getline(data_of_program *data);
 
-int check_logicals(char *array_commands[], int i, char array_operators[]);
+int check_logic_ops(char *array_commands[], int i, char array_operators[]);
 
 /* */
 /* Included in file: expansions.c */
@@ -107,11 +110,11 @@ void free_array_of_pointers(char **directories);
 
 /* Free the fields needed each loop */
 /* Included in file: helpers_free.c */
-void free_data(data_of_program *data);
+void free_recurrent_data(data_of_program *data);
 
 /* Free all field of the data */
 /* Included in file: helpers_free.c */
-void free_data_all(data_of_program *data);
+void free_all_data(data_of_program *data);
 
 
 /************** BUILTINS **************/
@@ -226,7 +229,7 @@ char *get_alias(data_of_program *data, char *alias);
 int set_alias(char *alias_string, data_of_program *data);
 
 /* set the work directory */
-int set_directory(data_of_program *data, char *new_dir);
+int set_work_directory(data_of_program *data, char *new_dir);
 
 
 

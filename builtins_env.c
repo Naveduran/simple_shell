@@ -57,12 +57,7 @@ int builtin_set_env(data_of_program *data)
 {
 	/* validate args */
 	if (data->tokens[1] == NULL || data->tokens[2] == NULL)
-	{
-		/*errno = EINVAL;*/
-		/*perror(data->command_name);*/
-		/*return (5);*/
 		return (0);
-	}
 	if (data->tokens[3] != NULL)
 	{
 		errno = E2BIG;
@@ -84,11 +79,7 @@ int builtin_unset_env(data_of_program *data)
 {
 	/* validate args */
 	if (data->tokens[1] == NULL)
-	{
-		/*errno = EINVAL;*/
-		/*perror(data->command_name);*/
 		return (0);
-	}
 	if (data->tokens[2] != NULL)
 	{
 		errno = E2BIG;

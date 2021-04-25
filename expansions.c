@@ -1,73 +1,53 @@
 #include "shell.h"
 
-int buffer_add(char *buffer, char *str_to_add);
-
-
-
 /**
  * expand_variables - expand variables
  * @data: a pointer to a struct of the program's data
  *
  * Return: nothing, but sets errno.
  */
-int expand_variables(data_of_program *data)
+void expand_variables(data_of_program *data)
 {
-	int i, j, was_expanded = 0;
+	int i, j;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
 	if (data->input_line == NULL)
-		return (0);
-
+		return;
 	buffer_add(line, data->input_line);
-
 	for (i = 0; line[i]; i++)
-	{
 		if (line[i] == '#')
+			line[i--] = '\0';
+		else if (line[i] == '$' && line[i + 1] == '?')
 		{
 			line[i] = '\0';
-			i--;
-			was_expanded = 1;
+			long_to_string(errno, expansion, 10);
+			buffer_add(line, expansion);
+			buffer_add(line, data->input_line + i + 2);
+		}
+		else if (line[i] == '$' && line[i + 1] == '$')
+		{
+			line[i] = '\0';
+			long_to_string(getpid(), expansion, 10);
+			buffer_add(line, expansion);
+			buffer_add(line, data->input_line + i + 2);
 		}
 		else if (line[i] == '$')
 		{
-			if (line[i + 1] == '?')
-			{
-				line[i] = '\0';
-				long_to_string(errno, expansion, 10);
-				buffer_add(line, expansion);
-				buffer_add(line, data->input_line + i + 2);
-			}
-			else if (line[i + 1] == '$')
-			{
-				line[i] = '\0';
-				long_to_string(getpid(), expansion, 10);
-				buffer_add(line, expansion);
-				buffer_add(line, data->input_line + i + 2);
-			}
-			else
-			{
-				for (j = 1; line[i + j] && line[i + j] != ' '; j++)
-					expansion[j - 1] = line[i + j];
-
-				temp = env_get_key(expansion, data);
-				if (temp)
-				{
-					line[i] = '\0';
-					expansion[0] = '\0';
-					buffer_add(expansion, line + i + j);
-					buffer_add(line, temp);
-					buffer_add(line, expansion);
-				}
-			}
-			was_expanded = 1;
+			for (j = 1; line[i + j] && line[i + j] != ' '; j++)
+				expansion[j - 1] = line[i + j];
+			temp = env_get_key(expansion, data);
+			line[i] = '\0';
+			expansion[0] = '\0';
+			buffer_add(expansion, line + i + j);
+			if (temp)
+				buffer_add(line, temp);
+			buffer_add(line, expansion);
 		}
-	}
-	if (was_expanded)
+	if (!str_compare(data->input_line, line, 0))
 	{
 		free(data->input_line);
 		data->input_line = str_duplicate(line);
 	}
-	return (0);
 }
 
 /**
@@ -76,13 +56,13 @@ int expand_variables(data_of_program *data)
  *
  * Return: nothing, but sets errno.
  */
-int expand_alias(data_of_program *data)
+void expand_alias(data_of_program *data)
 {
 	int i, j, was_expanded = 0;
 	char line[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
 	if (data->input_line == NULL)
-		return (0);
+		return;
 
 	buffer_add(line, data->input_line);
 
@@ -98,8 +78,8 @@ int expand_alias(data_of_program *data)
 			expansion[0] = '\0';
 			buffer_add(expansion, line + i + j);
 			line[i] = '\0';
-			buffer_add(line, temp + 1);
-			line[str_length(line) - 1] = '\0';
+			buffer_add(line, temp);
+			line[str_length(line)] = '\0';
 			buffer_add(line, expansion);
 			was_expanded = 1;
 		}
@@ -110,7 +90,6 @@ int expand_alias(data_of_program *data)
 		free(data->input_line);
 		data->input_line = str_duplicate(line);
 	}
-	return (0);
 }
 
 /**

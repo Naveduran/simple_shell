@@ -63,7 +63,7 @@ void inicialize_data(data_of_program *data, int argc, char *argv[], char **env)
 		if (data->file_descriptor == -1)
 		{
 			perror(data->program_name);
-			exit(errno);
+			exit(127);
 		}
 	}
 

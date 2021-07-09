@@ -44,19 +44,3 @@ This project has been tested on `Ubuntu 14.06.6 LTS`
 * **Natalia Vera:** [GitHub](https://github.com/Naveduran) - [Email](naveduran@gmail.com) - [Twitter](https://twitter.com/NaVeDuran1)
 * **Jerson Pérez:** [Github](https://github.com/jepez90/) - [Linkedin](https://www.linkedin.com/in/jerson-p%C3%A9rez-010059a4)
 * **Edher Ramírez:** [GitHub](https://github.com/Edheramirez) -[Linkedin](https://www.linkedin.com/in/edher-joe-ramirez-estupi%C3%B1an-5b80701b8/) - [Twitter](https://twitter.com/edhe_r)
-
-```c
-simple_shell$./a.out
-dali<3 ls
-README.md
-dali<3 exit
-simple_shell$
-````
-
-## Environment
-This project has been tested on `Ubuntu 14.06.6 LTS`
-
-## Authors
-* **Natalia Vera:** [GitHub](https://github.com/Naveduran) - [Email](naveduran@gmail.com) - [Twitter](https://twitter.com/NaVeDuran1)
-* **Jerson Pérez:** [Github](https://github.com/jepez90/) - [Linkedin](https://www.linkedin.com/in/jerson-p%C3%A9rez-010059a4)
-* **Edher Ramírez:** [GitHub](https://github.com/Edheramirez) -[Linkedin](https://www.linkedin.com/in/edher-joe-ramirez-estupi%C3%B1an-5b80701b8/) - [Twitter](https://twitter.com/edhe_r)

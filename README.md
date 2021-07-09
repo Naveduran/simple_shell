@@ -1,9 +1,6 @@
 # Shell
 
-This repository contains our own simple version of the shell. It was written in C, as a learning exercise inside Holberton School.
-
-### Flowchart
-The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program functions in general.
+This repository contains our own simple version of the shell. It was written in C, as a learning exercise. The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program was built.
 
 ## Files of this repository
 |File| Description |
@@ -16,7 +13,7 @@ The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program 
 | **tokenize.c** | It save the parts to be analyzed later. |
 | **builtins_list.c** | It compare the command with a list of builtins, and if there is a match, It calls the associated builtin. |
 | **builtins.c** | It contains the code of the builtins included in the program.
-| **find_in_path** |  It analyze the global variable path. |
+| **find_in_path.c** |  It analyze the global variable path. |
 | **execute.c** | It tries to execute the string as a command. |
 | **helpers_string.c** | It contains some functions that help the main functions to process the strings. |
 | **helpers_printing.c** | It contains some functions that help to print content in the standar error and the standar output.|

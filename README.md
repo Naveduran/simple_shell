@@ -1,6 +1,6 @@
 # Shell
 
-This repository contains our own simple version of the shell. It was written in C, as a learning exercise. The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program was built.
+This repository contains our own simple version of the shell, a command line interpreter. It was written in C, as a learning exercise. The [Flowchart](https://miro.com/app/board/o9J_lMIftoE=/) shows how the program was built.
 
 ## Files of this repository
 |File| Description |
